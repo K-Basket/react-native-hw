@@ -1,10 +1,11 @@
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, View } from "react-native";
+import { RegistrationScreen } from "./Screens/RegistrationScreen";
 
 export default function App() {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>React Native - Homework 1!</Text>
+      <RegistrationScreen />
       <StatusBar style="auto" />
     </View>
   );
@@ -13,14 +14,8 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#FFFFE0",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  title: {
-    color: "#006400",
-    textAlign: "center",
-    fontSize: 25,
-    fontWeight: "bold",
+    backgroundColor: "#ffeafeff",
+    // alignItems: "center",
+    // justifyContent: "center",
   },
 });
