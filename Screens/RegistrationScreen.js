@@ -40,18 +40,21 @@ export function RegistrationScreen() {
     console.log('state :>> ', dataInput);
     setDataInput(initialState);
   }
-
+  console.log('isShowKeyboard :>> ', isShowKeyboard);
   return (
     <View style={styles.container}>
       <TouchableWithoutFeedback onPress={onHideKeyboard}>
         <ImageBackground style={styles.imageBG} source={logoBG}>
           <KeyboardAvoidingView
+            // style={{ ...styles.wrapForm, top: isShowKeyboard ? '25%' : 0 }}
+            style={styles.wrapForm}
             behavior={Platform.OS == 'ios' ? 'padding' : 'height'}
           >
             <View
               style={{
                 ...styles.form,
-                marginBottom: isShowKeyboard ? 50 : 0,
+                // marginBottom: isShowKeyboard ? 0 : 78,
+                // marginBottom: isShowKeyboard ? 0 : 50,
               }}
             >
               <View>
@@ -101,6 +104,17 @@ export function RegistrationScreen() {
               >
                 <Text style={styles.btnTitle}>Зареєструватися</Text>
               </TouchableOpacity>
+
+              {/* <Text style={styles.linkTitle}>Вже є акаунт? Увійти</Text> */}
+              <Text
+                style={{
+                  ...styles.linkTitle,
+                  // paddingBottom: isShowKeyboard && 0,
+                  // marginBottom: isShowKeyboard ? 5 : 78,
+                }}
+              >
+                Вже є акаунт? Увійти
+              </Text>
             </View>
           </KeyboardAvoidingView>
         </ImageBackground>
@@ -117,20 +131,27 @@ const styles = StyleSheet.create({
   imageBG: {
     flex: 1,
     resizeMode: 'cover',
-    // alignItems: "center",
-    justifyContent: 'center',
+    justifyContent: 'flex-end',
+    // alignItems: 'center',
+    // justifyContent: 'center',
   },
   title: {
     color: '#fff',
     // color: "#212121",
     fontSize: 20,
   },
-
+  wrapForm: {
+    borderTopLeftRadius: 25,
+    borderTopRightRadius: 25,
+    backgroundColor: 'grey',
+    // bottom: '20%',
+  },
   form: {
     marginHorizontal: 16,
+    marginBottom: 78,
   },
   titleForm: {
-    // fontFamily: 'RobotoBold',
+    fontFamily: 'RobotoBold',
     fontSize: 30,
     fontWeight: 500,
     color: '#fff',
@@ -150,16 +171,25 @@ const styles = StyleSheet.create({
     // color: "#212121", // по макету
   },
   btn: {
+    marginTop: 43,
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#FF6C00',
     height: 50,
     borderRadius: 100,
-    marginTop: 43,
   },
   btnTitle: {
     fontSize: 16,
     color: '#fff',
+  },
+  linkTitle: {
+    paddingTop: 16,
+    // paddingBottom: 78,
+
+    fontFamily: 'RobotoRegular',
+    fontSize: 16,
+    textAlign: 'center',
+    color: '#1B4371',
   },
 });
 
