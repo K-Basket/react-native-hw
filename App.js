@@ -2,19 +2,20 @@ import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, View } from 'react-native';
 import { RegistrationScreen } from './Screens/RegistrationScreen';
 import { useFonts } from 'expo-font';
+import { LoginScreen } from './Screens/LoginScreen';
 
 export default function App() {
   const [fontsLoaded] = useFonts({
-    RobotoBold: require('./assets/fonts/Roboto-Bold-700.ttf'),
-    RobotoRegular: require('./assets/fonts/Roboto-Regular-400.ttf'),
-    RobotoMedium: require('./assets/fonts/Roboto-Medium-500.ttf'),
+    'Roboto-700': require('./assets/fonts/Roboto-Bold.ttf'),
+    'Roboto-400': require('./assets/fonts/Roboto-Regular.ttf'),
+    'Roboto-500': require('./assets/fonts/Roboto-Medium.ttf'),
   });
-
-  if (!fontsLoaded) null; // сначала загрузка шрифтов, потом все остальное
+  if (!fontsLoaded) return null; // сначала загрузка шрифтов, потом все остальное
 
   return (
     <View style={styles.container}>
       <RegistrationScreen />
+      {/* <LoginScreen /> */}
       <StatusBar style="auto" />
     </View>
   );

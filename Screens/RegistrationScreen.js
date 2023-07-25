@@ -9,9 +9,11 @@ import {
   KeyboardAvoidingView,
   TouchableWithoutFeedback,
   Keyboard,
+  Image,
 } from 'react-native';
 import logoBG from '../assets/img/photo-bg.jpg';
-import { useState } from 'react';
+import avatar from '../assets/img/avatar-1.jpg';
+import { useEffect, useState } from 'react';
 
 const initialState = {
   login: '',
@@ -22,6 +24,21 @@ const initialState = {
 export function RegistrationScreen() {
   const [isShowKeyboard, setIsShowKeyboard] = useState(false);
   const [dataInput, setDataInput] = useState(initialState);
+  const [isShowPass, setIsShowPass] = useState(true);
+
+  useEffect(() => {
+    const showSubscription = Keyboard.addListener('keyboardWillShow', () => {
+      setIsShowKeyboard(true);
+    });
+    const hideSubscription = Keyboard.addListener('keyboardWillHide', () => {
+      setIsShowKeyboard(false);
+    });
+
+    return () => {
+      showSubscription.remove();
+      hideSubscription.remove();
+    };
+  }, []);
 
   function onShowKeyboard() {
     setIsShowKeyboard(true);
@@ -40,32 +57,37 @@ export function RegistrationScreen() {
     console.log('state :>> ', dataInput);
     setDataInput(initialState);
   }
-  console.log('isShowKeyboard :>> ', isShowKeyboard);
+
+  function onLogin() {
+    console.log('Вже є акаунт? Увійти');
+  }
+
   return (
     <View style={styles.container}>
       <TouchableWithoutFeedback onPress={onHideKeyboard}>
         <ImageBackground style={styles.imageBG} source={logoBG}>
           <KeyboardAvoidingView
-            // style={{ ...styles.wrapForm, top: isShowKeyboard ? '25%' : 0 }}
             style={styles.wrapForm}
             behavior={Platform.OS == 'ios' ? 'padding' : 'height'}
           >
             <View
-              style={{
-                ...styles.form,
-                // marginBottom: isShowKeyboard ? 0 : 78,
-                // marginBottom: isShowKeyboard ? 0 : 50,
-              }}
+              style={{ ...styles.form, marginBottom: isShowKeyboard ? 32 : 78 }}
             >
+              {/* <View style={{ borderWidth: 1 }}> */}
+              <Image style={styles.imgAvatar} source={avatar} />
+              {/* </View> */}
               <View>
                 <Text style={styles.titleForm}>Реєстрація</Text>
               </View>
-              <View>
-                <Text style={styles.inputTitle}>Login</Text>
+              <View style={{ marginTop: 33 }}>
                 <TextInput
                   style={styles.input}
-                  textAlign="center"
+                  textAlign="left"
+                  placeholder="login"
                   onFocus={onShowKeyboard}
+                  onBlur={() => {
+                    console.log('onBlur');
+                  }}
                   value={dataInput.login} // передаем данные из state
                   onChangeText={value =>
                     setDataInput(prev => ({ ...prev, login: value }))
@@ -73,10 +95,10 @@ export function RegistrationScreen() {
                 />
               </View>
               <View style={{ marginTop: 16 }}>
-                <Text style={styles.inputTitle}>E-Mail</Text>
                 <TextInput
                   style={styles.input}
-                  textAlign="center"
+                  textAlign="left"
+                  placeholder="Адреса електронної пошти"
                   onFocus={onShowKeyboard}
                   value={dataInput.email}
                   onChangeText={value =>
@@ -84,37 +106,48 @@ export function RegistrationScreen() {
                   }
                 />
               </View>
-              <View style={{ marginTop: 16 }}>
-                <Text style={styles.inputTitle}>Password</Text>
+              <View
+                style={{
+                  marginTop: 16,
+                  position: 'relative',
+                }}
+              >
                 <TextInput
                   style={styles.input}
-                  textAlign="center"
-                  secureTextEntry={true}
+                  textAlign="left"
+                  placeholder="Пароль"
+                  secureTextEntry={isShowPass}
                   onFocus={onShowKeyboard}
                   value={dataInput.password}
                   onChangeText={value =>
                     setDataInput(prev => ({ ...prev, password: value }))
                   }
                 />
+                <TouchableOpacity
+                  style={styles.show}
+                  onPress={() => setIsShowPass(prev => !prev)}
+                >
+                  <Text style={styles.showTitle}>
+                    {isShowPass ? 'Показати' : 'Приховати'}
+                  </Text>
+                </TouchableOpacity>
               </View>
-              <TouchableOpacity
-                style={styles.btn}
-                activeOpacity={0.8}
-                onPress={onSubmit}
-              >
-                <Text style={styles.btnTitle}>Зареєструватися</Text>
-              </TouchableOpacity>
 
-              {/* <Text style={styles.linkTitle}>Вже є акаунт? Увійти</Text> */}
-              <Text
-                style={{
-                  ...styles.linkTitle,
-                  // paddingBottom: isShowKeyboard && 0,
-                  // marginBottom: isShowKeyboard ? 5 : 78,
-                }}
-              >
-                Вже є акаунт? Увійти
-              </Text>
+              {!isShowKeyboard && (
+                <TouchableOpacity
+                  style={styles.btn}
+                  activeOpacity={0.8}
+                  onPress={onSubmit}
+                >
+                  <Text style={styles.btnTitle}>Зареєструватися</Text>
+                </TouchableOpacity>
+              )}
+
+              {!isShowKeyboard && (
+                <TouchableOpacity activeOpacity={0.6} onPress={onLogin}>
+                  <Text style={styles.linkTitle}>Вже є акаунт? Увійти</Text>
+                </TouchableOpacity>
+              )}
             </View>
           </KeyboardAvoidingView>
         </ImageBackground>
@@ -132,43 +165,52 @@ const styles = StyleSheet.create({
     flex: 1,
     resizeMode: 'cover',
     justifyContent: 'flex-end',
-    // alignItems: 'center',
-    // justifyContent: 'center',
   },
   title: {
-    color: '#fff',
-    // color: "#212121",
+    // color: '#fff',
+    color: '#212121',
     fontSize: 20,
   },
   wrapForm: {
     borderTopLeftRadius: 25,
     borderTopRightRadius: 25,
-    backgroundColor: 'grey',
-    // bottom: '20%',
+    backgroundColor: '#fff',
   },
   form: {
     marginHorizontal: 16,
-    marginBottom: 78,
+  },
+  imgAvatar: {
+    position: 'absolute',
+    top: -60,
+    left: '35%',
   },
   titleForm: {
-    fontFamily: 'RobotoBold',
-    fontSize: 30,
-    fontWeight: 500,
-    color: '#fff',
-    // color: "#212121",
+    marginTop: 92,
     textAlign: 'center',
-  },
-  inputTitle: {
-    color: '#fff',
-    marginBottom: 5,
+    fontFamily: 'Roboto-500',
+    fontSize: 30,
+    letterSpacing: 0.3,
+    color: '#212121',
   },
   input: {
-    borderWidth: 1,
-    borderColor: '#E8E8E8',
+    paddingLeft: 16,
     height: 50,
+    borderWidth: 1,
     borderRadius: 6,
-    color: '#fff',
-    // color: "#212121", // по макету
+    fontFamily: 'Roboto-400',
+    color: '#212121',
+    borderColor: '#E8E8E8',
+    backgroundColor: '#F6F6F6',
+  },
+  show: {
+    position: 'absolute',
+    top: 16,
+    right: 16,
+  },
+  showTitle: {
+    fontFamily: 'Roboto-400',
+    fontSize: 16,
+    color: '#1B4371',
   },
   btn: {
     marginTop: 43,
@@ -184,9 +226,8 @@ const styles = StyleSheet.create({
   },
   linkTitle: {
     paddingTop: 16,
-    // paddingBottom: 78,
 
-    fontFamily: 'RobotoRegular',
+    fontFamily: 'Roboto-400',
     fontSize: 16,
     textAlign: 'center',
     color: '#1B4371',
