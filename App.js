@@ -1,10 +1,22 @@
-import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View } from "react-native";
+import { StatusBar } from 'expo-status-bar';
+import { StyleSheet, View } from 'react-native';
+import { RegistrationScreen } from './Screens/RegistrationScreen';
+import { useFonts } from 'expo-font';
+import { LoginScreen } from './Screens/LoginScreen';
 
 export default function App() {
+  const [fontsLoaded] = useFonts({
+    'Roboto-700': require('./assets/fonts/Roboto-Bold.ttf'),
+    'Roboto-400': require('./assets/fonts/Roboto-Regular.ttf'),
+    'Roboto-500': require('./assets/fonts/Roboto-Medium.ttf'),
+  });
+  if (!fontsLoaded) return null; // сначала загрузка шрифтов, потом все остальное
+
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>React Native - Homework 1!</Text>
+      <RegistrationScreen />
+      {/* <LoginScreen /> */}
+
       <StatusBar style="auto" />
     </View>
   );
@@ -13,14 +25,8 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#FFFFE0",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  title: {
-    color: "#006400",
-    textAlign: "center",
-    fontSize: 25,
-    fontWeight: "bold",
+    backgroundColor: '#ffeafeff',
+    // alignItems: "center",
+    // justifyContent: "center",
   },
 });
