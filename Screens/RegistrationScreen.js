@@ -106,6 +106,7 @@ export function RegistrationScreen() {
                   style={styles.input}
                   textAlign="left"
                   placeholder="Адреса електронної пошти"
+                  keyboardType="email-address"
                   onFocus={onShowKeyboard}
                   value={dataInput.email}
                   onChangeText={value =>
