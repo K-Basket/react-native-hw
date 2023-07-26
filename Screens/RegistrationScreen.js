@@ -11,9 +11,10 @@ import {
   Keyboard,
   Image,
 } from 'react-native';
-import logoBG from '../assets/img/photo-bg.jpg';
-import avatar from '../assets/img/avatar-1.jpg';
 import { useEffect, useState } from 'react';
+import imageBG from '../assets/img/photo-bg.jpg';
+import avatar from '../assets/img/avatar-1.jpg';
+import add from '../assets/img/add.png';
 
 const initialState = {
   login: '',
@@ -65,7 +66,7 @@ export function RegistrationScreen() {
   return (
     <View style={styles.container}>
       <TouchableWithoutFeedback onPress={onHideKeyboard}>
-        <ImageBackground style={styles.imageBG} source={logoBG}>
+        <ImageBackground style={styles.imageBG} source={imageBG}>
           <KeyboardAvoidingView
             style={styles.wrapForm}
             behavior={Platform.OS == 'ios' ? 'padding' : 'height'}
@@ -73,12 +74,17 @@ export function RegistrationScreen() {
             <View
               style={{ ...styles.form, marginBottom: isShowKeyboard ? 32 : 78 }}
             >
-              {/* <View style={{ borderWidth: 1 }}> */}
-              <Image style={styles.imgAvatar} source={avatar} />
-              {/* </View> */}
+              <View style={{ zIndex: 1 }}>
+                <Image style={styles.imgAvatar} source={avatar} />
+                <TouchableOpacity activeOpacity={0.5} onPress={onSubmit}>
+                  <Image style={styles.imgAdd} source={add} />
+                </TouchableOpacity>
+              </View>
+
               <View>
                 <Text style={styles.titleForm}>Реєстрація</Text>
               </View>
+
               <View style={{ marginTop: 33 }}>
                 <TextInput
                   style={styles.input}
@@ -94,6 +100,7 @@ export function RegistrationScreen() {
                   } // записываем данные в state
                 />
               </View>
+
               <View style={{ marginTop: 16 }}>
                 <TextInput
                   style={styles.input}
@@ -106,6 +113,7 @@ export function RegistrationScreen() {
                   }
                 />
               </View>
+
               <View
                 style={{
                   marginTop: 16,
@@ -123,6 +131,7 @@ export function RegistrationScreen() {
                     setDataInput(prev => ({ ...prev, password: value }))
                   }
                 />
+
                 <TouchableOpacity
                   style={styles.show}
                   onPress={() => setIsShowPass(prev => !prev)}
@@ -167,7 +176,6 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
   },
   title: {
-    // color: '#fff',
     color: '#212121',
     fontSize: 20,
   },
@@ -183,6 +191,11 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: -60,
     left: '35%',
+  },
+  imgAdd: {
+    position: 'absolute',
+    top: 14,
+    left: '62%',
   },
   titleForm: {
     marginTop: 92,
