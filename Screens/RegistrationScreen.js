@@ -55,6 +55,7 @@ export function RegistrationScreen() {
       return console.warn('Please fill in all fields!');
 
     onHideKeyboard();
+    setIsShowPass(true);
     console.log('state :>> ', dataInput);
     setDataInput(initialState);
   }
@@ -94,7 +95,7 @@ export function RegistrationScreen() {
                 <TextInput
                   style={styles.input}
                   textAlign="left"
-                  placeholder="login"
+                  placeholder="Логін"
                   onFocus={onShowKeyboard}
                   onBlur={() => {
                     console.log('onBlur');
@@ -256,6 +257,6 @@ const styles = StyleSheet.create({
 /*
 
 - KeyboardAvoidingView behavior={Platform.OS == "ios" ? "padding" : "height"} - // fix перекриття клавіатурою форми
-- TouchableWithoutFeedback onPress={Keyboard.dismiss} -- клавіатура знікає при дотику будь де по екрану
+- TouchableWithoutFeedback onPress={Keyboard.dismiss} -- клавіатура зникає при дотику будь де по екрану
 
 */
