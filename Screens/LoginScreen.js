@@ -11,7 +11,7 @@ import {
   Keyboard,
   Image,
 } from 'react-native';
-import logoBG from '../assets/img/photo-bg.jpg';
+import logoBG from './img/photo-bg.jpg';
 import { useEffect, useState } from 'react';
 
 const initialState = {

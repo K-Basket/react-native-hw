@@ -12,9 +12,9 @@ import {
   Image,
 } from 'react-native';
 import { useEffect, useState } from 'react';
-import imageBG from '../assets/img/photo-bg.jpg';
-import avatar from '../assets/img/avatar-1.jpg';
-import add from '../assets/img/add.png';
+import imageBG from './img/photo-bg.jpg';
+import avatar from './img/avatar-1.jpg';
+import add from './img/add.png';
 
 const initialState = {
   login: '',
@@ -76,7 +76,12 @@ export function RegistrationScreen() {
             >
               <View style={{ zIndex: 1 }}>
                 <Image style={styles.imgAvatar} source={avatar} />
-                <TouchableOpacity activeOpacity={0.5} onPress={onSubmit}>
+                <TouchableOpacity
+                  activeOpacity={0.5}
+                  onPress={() => {
+                    console.log('add avatar');
+                  }}
+                >
                   <Image style={styles.imgAdd} source={add} />
                 </TouchableOpacity>
               </View>
