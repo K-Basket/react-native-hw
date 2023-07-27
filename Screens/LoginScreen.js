@@ -9,10 +9,9 @@ import {
   KeyboardAvoidingView,
   TouchableWithoutFeedback,
   Keyboard,
-  Image,
 } from 'react-native';
-import logoBG from '../assets/img/photo-bg.jpg';
 import { useEffect, useState } from 'react';
+import logoBG from './img/photo-bg.jpg';
 
 const initialState = {
   email: '',
@@ -52,6 +51,7 @@ export function LoginScreen() {
       return console.warn('Please fill in all fields!');
 
     onHideKeyboard();
+    setIsShowPass(true);
     console.log('state :>> ', dataInput);
     setDataInput(initialState);
   }
@@ -77,6 +77,7 @@ export function LoginScreen() {
               <View>
                 <Text style={styles.titleForm}>Увійти</Text>
               </View>
+
               <View style={{ marginTop: 33 }}>
                 <TextInput
                   style={styles.input}
@@ -89,6 +90,7 @@ export function LoginScreen() {
                   }
                 />
               </View>
+
               <View
                 style={{
                   marginTop: 16,

@@ -12,9 +12,9 @@ import {
   Image,
 } from 'react-native';
 import { useEffect, useState } from 'react';
-import imageBG from '../assets/img/photo-bg.jpg';
-import avatar from '../assets/img/avatar-1.jpg';
-import add from '../assets/img/add.png';
+import imageBG from './img/photo-bg.jpg';
+import avatar from './img/avatar-1.jpg';
+import add from './img/add.png';
 
 const initialState = {
   login: '',
@@ -55,6 +55,7 @@ export function RegistrationScreen() {
       return console.warn('Please fill in all fields!');
 
     onHideKeyboard();
+    setIsShowPass(true);
     console.log('state :>> ', dataInput);
     setDataInput(initialState);
   }
@@ -76,7 +77,12 @@ export function RegistrationScreen() {
             >
               <View style={{ zIndex: 1 }}>
                 <Image style={styles.imgAvatar} source={avatar} />
-                <TouchableOpacity activeOpacity={0.5} onPress={onSubmit}>
+                <TouchableOpacity
+                  activeOpacity={0.5}
+                  onPress={() => {
+                    console.log('add avatar');
+                  }}
+                >
                   <Image style={styles.imgAdd} source={add} />
                 </TouchableOpacity>
               </View>
@@ -89,7 +95,7 @@ export function RegistrationScreen() {
                 <TextInput
                   style={styles.input}
                   textAlign="left"
-                  placeholder="login"
+                  placeholder="Логін"
                   onFocus={onShowKeyboard}
                   onBlur={() => {
                     console.log('onBlur');
@@ -251,6 +257,6 @@ const styles = StyleSheet.create({
 /*
 
 - KeyboardAvoidingView behavior={Platform.OS == "ios" ? "padding" : "height"} - // fix перекриття клавіатурою форми
-- TouchableWithoutFeedback onPress={Keyboard.dismiss} -- клавіатура знікає при дотику будь де по екрану
+- TouchableWithoutFeedback onPress={Keyboard.dismiss} -- клавіатура зникає при дотику будь де по екрану
 
 */
