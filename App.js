@@ -34,10 +34,10 @@ export default function App() {
             behavior={Platform.OS == 'ios' ? 'padding' : 'height'}
           >
             <RegistrationScreen />
+            {/* <LoginScreen /> */}
           </KeyboardAvoidingView>
         </ImageBackground>
       </TouchableWithoutFeedback>
-      {/* <LoginScreen /> */}
       <StatusBar style="auto" />
     </View>
   );

@@ -1,17 +1,12 @@
 import {
   TouchableOpacity,
-  ImageBackground,
   StyleSheet,
   Text,
   TextInput,
   View,
-  Platform,
-  KeyboardAvoidingView,
-  TouchableWithoutFeedback,
   Keyboard,
 } from 'react-native';
 import { useEffect, useState } from 'react';
-import logoBG from './img/photo-bg.jpg';
 
 const initialState = {
   email: '',
@@ -41,11 +36,6 @@ export function LoginScreen() {
     setIsShowKeyboard(true);
   }
 
-  function onHideKeyboard() {
-    setIsShowKeyboard(false);
-    Keyboard.dismiss();
-  }
-
   function onSubmit() {
     if (!dataInput.email || !dataInput.password)
       return console.warn('Please fill in all fields!');
@@ -61,98 +51,78 @@ export function LoginScreen() {
   }
 
   return (
-    <View style={styles.container}>
-      <TouchableWithoutFeedback onPress={onHideKeyboard}>
-        <ImageBackground style={styles.imageBG} source={logoBG}>
-          <KeyboardAvoidingView
-            style={styles.wrapForm}
-            behavior={Platform.OS == 'ios' ? 'padding' : 'height'}
+    <View>
+      <View
+        style={{
+          ...styles.form,
+          marginBottom: isShowKeyboard ? 32 : 144,
+        }}
+      >
+        <View>
+          <Text style={styles.titleForm}>Увійти</Text>
+        </View>
+
+        <View style={{ marginTop: 33 }}>
+          <TextInput
+            style={styles.input}
+            textAlign="left"
+            placeholder="Адреса електронної пошти"
+            onFocus={onShowKeyboard}
+            value={dataInput.email}
+            onChangeText={value =>
+              setDataInput(prev => ({ ...prev, email: value }))
+            }
+          />
+        </View>
+
+        <View
+          style={{
+            marginTop: 16,
+            position: 'relative',
+          }}
+        >
+          <TextInput
+            style={styles.input}
+            textAlign="left"
+            placeholder="Пароль"
+            secureTextEntry={isShowPass}
+            onFocus={onShowKeyboard}
+            value={dataInput.password}
+            onChangeText={value =>
+              setDataInput(prev => ({ ...prev, password: value }))
+            }
+          />
+          <TouchableOpacity
+            style={styles.show}
+            onPress={() => setIsShowPass(prev => !prev)}
           >
-            <View
-              style={{
-                ...styles.form,
-                marginBottom: isShowKeyboard ? 32 : 144,
-              }}
-            >
-              <View>
-                <Text style={styles.titleForm}>Увійти</Text>
-              </View>
+            <Text style={styles.showTitle}>
+              {isShowPass ? 'Показати' : 'Приховати'}
+            </Text>
+          </TouchableOpacity>
+        </View>
 
-              <View style={{ marginTop: 33 }}>
-                <TextInput
-                  style={styles.input}
-                  textAlign="left"
-                  placeholder="Адреса електронної пошти"
-                  onFocus={onShowKeyboard}
-                  value={dataInput.email}
-                  onChangeText={value =>
-                    setDataInput(prev => ({ ...prev, email: value }))
-                  }
-                />
-              </View>
+        {!isShowKeyboard && (
+          <TouchableOpacity
+            style={styles.btn}
+            activeOpacity={0.8}
+            onPress={onSubmit}
+          >
+            <Text style={styles.btnTitle}>Увійти</Text>
+          </TouchableOpacity>
+        )}
 
-              <View
-                style={{
-                  marginTop: 16,
-                  position: 'relative',
-                }}
-              >
-                <TextInput
-                  style={styles.input}
-                  textAlign="left"
-                  placeholder="Пароль"
-                  secureTextEntry={isShowPass}
-                  onFocus={onShowKeyboard}
-                  value={dataInput.password}
-                  onChangeText={value =>
-                    setDataInput(prev => ({ ...prev, password: value }))
-                  }
-                />
-                <TouchableOpacity
-                  style={styles.show}
-                  onPress={() => setIsShowPass(prev => !prev)}
-                >
-                  <Text style={styles.showTitle}>
-                    {isShowPass ? 'Показати' : 'Приховати'}
-                  </Text>
-                </TouchableOpacity>
-              </View>
-
-              {!isShowKeyboard && (
-                <TouchableOpacity
-                  style={styles.btn}
-                  activeOpacity={0.8}
-                  onPress={onSubmit}
-                >
-                  <Text style={styles.btnTitle}>Увійти</Text>
-                </TouchableOpacity>
-              )}
-
-              {!isShowKeyboard && (
-                <TouchableOpacity activeOpacity={0.6} onPress={onLogin}>
-                  <Text style={styles.linkTitle}>
-                    Немає акаунту? Зареєструватися
-                  </Text>
-                </TouchableOpacity>
-              )}
-            </View>
-          </KeyboardAvoidingView>
-        </ImageBackground>
-      </TouchableWithoutFeedback>
+        {!isShowKeyboard && (
+          <TouchableOpacity activeOpacity={0.6} onPress={onLogin}>
+            <Text style={styles.linkTitle}>Немає акаунту? Зареєструватися</Text>
+          </TouchableOpacity>
+        )}
+      </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-  },
-  imageBG: {
-    flex: 1,
-    resizeMode: 'cover',
-    justifyContent: 'flex-end',
-  },
   title: {
     color: '#212121',
     fontSize: 20,
