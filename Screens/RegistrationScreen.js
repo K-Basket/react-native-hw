@@ -1,18 +1,13 @@
 import {
   TouchableOpacity,
-  ImageBackground,
   StyleSheet,
   Text,
   TextInput,
   View,
-  Platform,
-  KeyboardAvoidingView,
-  TouchableWithoutFeedback,
   Keyboard,
   Image,
 } from 'react-native';
 import { useEffect, useState } from 'react';
-import imageBG from './img/photo-bg.jpg';
 import avatar from './img/avatar-1.jpg';
 import add from './img/add.png';
 
@@ -45,18 +40,13 @@ export function RegistrationScreen() {
     setIsShowKeyboard(true);
   }
 
-  function onHideKeyboard() {
-    setIsShowKeyboard(false);
-    Keyboard.dismiss();
-  }
-
   function onSubmit() {
     if (!dataInput.login || !dataInput.email || !dataInput.password)
       return console.warn('Please fill in all fields!');
 
-    onHideKeyboard();
     setIsShowPass(true);
     console.log('state :>> ', dataInput);
+
     setDataInput(initialState);
   }
 
@@ -65,131 +55,106 @@ export function RegistrationScreen() {
   }
 
   return (
-    <View style={styles.container}>
-      <TouchableWithoutFeedback onPress={onHideKeyboard}>
-        <ImageBackground style={styles.imageBG} source={imageBG}>
-          <KeyboardAvoidingView
-            style={styles.wrapForm}
-            behavior={Platform.OS == 'ios' ? 'padding' : 'height'}
+    <View>
+      <View style={{ ...styles.form, marginBottom: isShowKeyboard ? 32 : 78 }}>
+        <View style={{ zIndex: 1 }}>
+          <Image style={styles.imgAvatar} source={avatar} />
+          <TouchableOpacity
+            activeOpacity={0.5}
+            onPress={() => {
+              console.log('add avatar');
+            }}
           >
-            <View
-              style={{ ...styles.form, marginBottom: isShowKeyboard ? 32 : 78 }}
-            >
-              <View style={{ zIndex: 1 }}>
-                <Image style={styles.imgAvatar} source={avatar} />
-                <TouchableOpacity
-                  activeOpacity={0.5}
-                  onPress={() => {
-                    console.log('add avatar');
-                  }}
-                >
-                  <Image style={styles.imgAdd} source={add} />
-                </TouchableOpacity>
-              </View>
+            <Image style={styles.imgAdd} source={add} />
+          </TouchableOpacity>
+        </View>
 
-              <View>
-                <Text style={styles.titleForm}>Реєстрація</Text>
-              </View>
+        <View>
+          <Text style={styles.titleForm}>Реєстрація</Text>
+        </View>
 
-              <View style={{ marginTop: 33 }}>
-                <TextInput
-                  style={styles.input}
-                  textAlign="left"
-                  placeholder="Логін"
-                  onFocus={onShowKeyboard}
-                  onBlur={() => {
-                    console.log('onBlur');
-                  }}
-                  value={dataInput.login} // передаем данные из state
-                  onChangeText={value =>
-                    setDataInput(prev => ({ ...prev, login: value }))
-                  } // записываем данные в state
-                />
-              </View>
+        <View style={{ marginTop: 33 }}>
+          <TextInput
+            style={styles.input}
+            textAlign="left"
+            placeholder="Логін"
+            onFocus={onShowKeyboard}
+            onBlur={() => {
+              console.log('onBlur');
+            }}
+            value={dataInput.login} // передаем данные из state
+            onChangeText={value =>
+              setDataInput(prev => ({ ...prev, login: value }))
+            } // записываем данные в state
+          />
+        </View>
 
-              <View style={{ marginTop: 16 }}>
-                <TextInput
-                  style={styles.input}
-                  textAlign="left"
-                  placeholder="Адреса електронної пошти"
-                  keyboardType="email-address"
-                  onFocus={onShowKeyboard}
-                  value={dataInput.email}
-                  onChangeText={value =>
-                    setDataInput(prev => ({ ...prev, email: value }))
-                  }
-                />
-              </View>
+        <View style={{ marginTop: 16 }}>
+          <TextInput
+            style={styles.input}
+            textAlign="left"
+            placeholder="Адреса електронної пошти"
+            keyboardType="email-address"
+            onFocus={onShowKeyboard}
+            value={dataInput.email}
+            onChangeText={value =>
+              setDataInput(prev => ({ ...prev, email: value }))
+            }
+          />
+        </View>
 
-              <View
-                style={{
-                  marginTop: 16,
-                  position: 'relative',
-                }}
-              >
-                <TextInput
-                  style={styles.input}
-                  textAlign="left"
-                  placeholder="Пароль"
-                  secureTextEntry={isShowPass}
-                  onFocus={onShowKeyboard}
-                  value={dataInput.password}
-                  onChangeText={value =>
-                    setDataInput(prev => ({ ...prev, password: value }))
-                  }
-                />
+        <View
+          style={{
+            marginTop: 16,
+            position: 'relative',
+          }}
+        >
+          <TextInput
+            style={styles.input}
+            textAlign="left"
+            placeholder="Пароль"
+            secureTextEntry={isShowPass}
+            onFocus={onShowKeyboard}
+            value={dataInput.password}
+            onChangeText={value =>
+              setDataInput(prev => ({ ...prev, password: value }))
+            }
+          />
 
-                <TouchableOpacity
-                  style={styles.show}
-                  onPress={() => setIsShowPass(prev => !prev)}
-                >
-                  <Text style={styles.showTitle}>
-                    {isShowPass ? 'Показати' : 'Приховати'}
-                  </Text>
-                </TouchableOpacity>
-              </View>
+          <TouchableOpacity
+            style={styles.show}
+            onPress={() => setIsShowPass(prev => !prev)}
+          >
+            <Text style={styles.showTitle}>
+              {isShowPass ? 'Показати' : 'Приховати'}
+            </Text>
+          </TouchableOpacity>
+        </View>
 
-              {!isShowKeyboard && (
-                <TouchableOpacity
-                  style={styles.btn}
-                  activeOpacity={0.8}
-                  onPress={onSubmit}
-                >
-                  <Text style={styles.btnTitle}>Зареєструватися</Text>
-                </TouchableOpacity>
-              )}
+        {!isShowKeyboard && (
+          <TouchableOpacity
+            style={styles.btn}
+            activeOpacity={0.8}
+            onPress={onSubmit}
+          >
+            <Text style={styles.btnTitle}>Зареєструватися</Text>
+          </TouchableOpacity>
+        )}
 
-              {!isShowKeyboard && (
-                <TouchableOpacity activeOpacity={0.6} onPress={onLogin}>
-                  <Text style={styles.linkTitle}>Вже є акаунт? Увійти</Text>
-                </TouchableOpacity>
-              )}
-            </View>
-          </KeyboardAvoidingView>
-        </ImageBackground>
-      </TouchableWithoutFeedback>
+        {!isShowKeyboard && (
+          <TouchableOpacity activeOpacity={0.6} onPress={onLogin}>
+            <Text style={styles.linkTitle}>Вже є акаунт? Увійти</Text>
+          </TouchableOpacity>
+        )}
+      </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-  },
-  imageBG: {
-    flex: 1,
-    resizeMode: 'cover',
-    justifyContent: 'flex-end',
-  },
   title: {
     color: '#212121',
     fontSize: 20,
-  },
-  wrapForm: {
-    borderTopLeftRadius: 25,
-    borderTopRightRadius: 25,
-    backgroundColor: '#fff',
   },
   form: {
     marginHorizontal: 16,

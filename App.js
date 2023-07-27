@@ -1,8 +1,17 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, View } from 'react-native';
+import {
+  ImageBackground,
+  Keyboard,
+  KeyboardAvoidingView,
+  StyleSheet,
+  TouchableWithoutFeedback,
+  View,
+} from 'react-native';
 import { RegistrationScreen } from './Screens/RegistrationScreen';
 import { useFonts } from 'expo-font';
 import { LoginScreen } from './Screens/LoginScreen';
+
+import imageBG from './Screens/img/photo-bg.jpg';
 
 export default function App() {
   const [fontsLoaded] = useFonts({
@@ -14,9 +23,21 @@ export default function App() {
 
   return (
     <View style={styles.container}>
-      <RegistrationScreen />
+      <TouchableWithoutFeedback
+        onPress={() => {
+          console.log('Hi'), Keyboard.dismiss();
+        }}
+      >
+        <ImageBackground style={styles.imageBg} source={imageBG}>
+          <KeyboardAvoidingView
+            style={styles.wrapperForm}
+            behavior={Platform.OS == 'ios' ? 'padding' : 'height'}
+          >
+            <RegistrationScreen />
+          </KeyboardAvoidingView>
+        </ImageBackground>
+      </TouchableWithoutFeedback>
       {/* <LoginScreen /> */}
-
       <StatusBar style="auto" />
     </View>
   );
@@ -25,8 +46,17 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#ffeafeff',
     // alignItems: "center",
     // justifyContent: "center",
+  },
+  imageBg: {
+    flex: 1,
+    resizeMode: 'cover',
+    justifyContent: 'flex-end',
+  },
+  wrapperForm: {
+    borderTopLeftRadius: 25,
+    borderTopRightRadius: 25,
+    backgroundColor: '#fff',
   },
 });
