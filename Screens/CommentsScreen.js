@@ -1,11 +1,11 @@
 import { StyleSheet, Text, View } from 'react-native';
 
-export function PostsScreen() {
-  console.log('Screen --> PostsScreen');
+export function CommentsScreen() {
+  console.log('Screen --> CommentsScreen');
 
   return (
     <View>
-      <Text style={styles.test}>Page PostsScreen</Text>
+      <Text style={styles.test}>Page CommentsScreen</Text>
     </View>
   );
 }

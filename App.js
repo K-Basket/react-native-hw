@@ -15,6 +15,12 @@ import { LoginScreen } from './Screens/auth/LoginScreen.js';
 import imageBG from './assets/img/photo-bg.jpg';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
+import { CreatePostsScreen } from './Screens/CreatePostsScreen.js';
+import { CommentsScreen } from './Screens/CommentsScreen.js';
+import { ProfileScreen } from './Screens/ProfileScreen.js';
+import { PostsScreen } from './Screens/PostsScreen.js';
+import { MapScreen } from './Screens/MapScreen.js';
+import { Home } from './Screens/Home.js';
 
 const AuthStack = createStackNavigator(); // для групировки экранов и рендера отдельных экранов
 
@@ -29,6 +35,13 @@ export default function App() {
 
   return (
     <NavigationContainer style={styles.container}>
+      <PostsScreen />
+      <CreatePostsScreen />
+      <CommentsScreen />
+      <ProfileScreen />
+      <MapScreen />
+      <Home />
+
       <AuthStack.Navigator initialRouteName="LoginScreen">
         <AuthStack.Screen
           name="Registration"
