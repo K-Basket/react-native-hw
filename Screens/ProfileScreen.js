@@ -4,17 +4,23 @@ export function ProfileScreen() {
   console.log('Screen --> ProfileScreen');
 
   return (
-    <View>
-      <Text style={styles.test}>Page ProfileScreen</Text>
+    <View style={styles.container}>
+      <Text style={styles.text}>Page ProfileScreen</Text>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  test: {
-    marginVertical: 20,
-    textAlign: 'center',
+  container: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  text: {
+    paddingHorizontal: 15,
+    paddingVertical: 10,
     borderWidth: 1,
+    borderRadius: 10,
     borderColor: `#8a2be2`,
     fontFamily: 'Roboto-700',
     fontSize: 20,

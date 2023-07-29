@@ -50,10 +50,12 @@ export function LoginScreen() {
     setIsShowPass(true);
     console.log('state :>> ', dataInput);
     setDataInput(initialState);
+
+    navigation.navigate('Home');
   }
 
   function onLogin() {
-    navigation.navigate('Registration');
+    navigation.navigate('Registration'); // 'Registration' - имя маршрута (Navigation.js)
     console.log('to Registration');
   }
 

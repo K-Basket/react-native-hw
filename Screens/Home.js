@@ -1,23 +1,21 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet } from 'react-native';
+import { PostsScreen } from './PostsScreen';
+import { createStackNavigator } from '@react-navigation/stack';
+import { CreatePostsScreen } from './CreatePostsScreen';
+import { ProfileScreen } from './ProfileScreen';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 export function Home() {
-  console.log('Screen --> Home');
+  const HomeStack = createStackNavigator();
+  const Tab = createBottomTabNavigator; // нижняя навигация
 
   return (
-    <View>
-      <Text style={styles.test}>Page Home</Text>
-    </View>
+    <HomeStack.Navigator initialRouteName="Posts">
+      <HomeStack.Screen name="Posts" component={PostsScreen} />
+      <HomeStack.Screen name="CreatePosts" component={CreatePostsScreen} />
+      <HomeStack.Screen name="Profile" component={ProfileScreen} />
+    </HomeStack.Navigator>
   );
 }
 
-const styles = StyleSheet.create({
-  test: {
-    marginVertical: 20,
-    textAlign: 'center',
-    borderWidth: 1,
-    borderColor: `#8a2be2`,
-    fontFamily: 'Roboto-700',
-    fontSize: 20,
-    color: '#9370db',
-  },
-});
+const styles = StyleSheet.create({});

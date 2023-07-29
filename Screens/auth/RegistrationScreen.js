@@ -54,6 +54,8 @@ export function RegistrationScreen() {
     setIsShowPass(true);
     console.log('state :>> ', dataInput);
     setDataInput(initialState);
+
+    navigation.navigate('Home');
   }
 
   function onLogin() {
