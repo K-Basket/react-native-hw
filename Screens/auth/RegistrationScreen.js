@@ -27,6 +27,7 @@ export function RegistrationScreen() {
   const [isShowKeyboard, setIsShowKeyboard] = useState(false);
   const [dataInput, setDataInput] = useState(initialState);
   const [isShowPass, setIsShowPass] = useState(true);
+
   const navigation = useNavigation();
 
   useEffect(() => {
