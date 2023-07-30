@@ -1,4 +1,6 @@
 import 'react-native-gesture-handler'; // должен быть в самом верху
+import { NavigationContainer } from '@react-navigation/native';
+import { useFonts } from 'expo-font';
 import { StatusBar } from 'expo-status-bar';
 import {
   ImageBackground,
@@ -9,10 +11,7 @@ import {
   View,
 } from 'react-native';
 import { RegistrationScreen } from './Screens/auth/RegistrationScreen.js';
-import { useFonts } from 'expo-font';
 import { LoginScreen } from './Screens/auth/LoginScreen.js';
-
-import { NavigationContainer } from '@react-navigation/native';
 import { Navigation } from './components/Navigation.js';
 
 export default function App() {

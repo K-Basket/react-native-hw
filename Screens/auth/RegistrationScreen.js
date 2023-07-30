@@ -1,3 +1,4 @@
+import { useNavigation } from '@react-navigation/native';
 import {
   TouchableOpacity,
   ImageBackground,
@@ -15,7 +16,6 @@ import { useEffect, useState } from 'react';
 import imageBG from '../../assets/img/photo-bg.jpg';
 import avatar from '../../assets/img/avatar-1.jpg';
 import add from '../../assets/img/add.png';
-import { useNavigation } from '@react-navigation/native';
 
 const initialState = {
   login: '',
