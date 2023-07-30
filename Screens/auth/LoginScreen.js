@@ -11,7 +11,8 @@ import {
   Keyboard,
 } from 'react-native';
 import { useEffect, useState } from 'react';
-import logoBG from './img/photo-bg.jpg';
+import logoBG from '../../assets/img/photo-bg.jpg';
+import { useNavigation } from '@react-navigation/native';
 
 const initialState = {
   email: '',
@@ -22,6 +23,7 @@ export function LoginScreen() {
   const [isShowKeyboard, setIsShowKeyboard] = useState(false);
   const [dataInput, setDataInput] = useState(initialState);
   const [isShowPass, setIsShowPass] = useState(true);
+  const navigation = useNavigation();
 
   useEffect(() => {
     const showSubscription = Keyboard.addListener('keyboardWillShow', () => {
@@ -41,28 +43,29 @@ export function LoginScreen() {
     setIsShowKeyboard(true);
   }
 
-  function onHideKeyboard() {
-    setIsShowKeyboard(false);
-    Keyboard.dismiss();
-  }
-
   function onSubmit() {
     if (!dataInput.email || !dataInput.password)
       return console.warn('Please fill in all fields!');
 
-    onHideKeyboard();
     setIsShowPass(true);
     console.log('state :>> ', dataInput);
     setDataInput(initialState);
+
+    navigation.navigate('Home');
   }
 
   function onLogin() {
-    console.log(' Немає акаунту? Зареєструватися');
+    navigation.navigate('Registration'); // 'Registration' - имя маршрута (Navigation.js)
+    console.log('to Registration');
   }
 
   return (
     <View style={styles.container}>
-      <TouchableWithoutFeedback onPress={onHideKeyboard}>
+      <TouchableWithoutFeedback
+        onPress={() => {
+          Keyboard.dismiss();
+        }}
+      >
         <ImageBackground style={styles.imageBG} source={logoBG}>
           <KeyboardAvoidingView
             style={styles.wrapForm}

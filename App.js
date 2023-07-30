@@ -1,24 +1,32 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, View } from 'react-native';
-import { RegistrationScreen } from './Screens/RegistrationScreen';
+import 'react-native-gesture-handler'; // должен быть в самом верху
+import { NavigationContainer } from '@react-navigation/native';
 import { useFonts } from 'expo-font';
-import { LoginScreen } from './Screens/LoginScreen';
+import { StatusBar } from 'expo-status-bar';
+import { StyleSheet } from 'react-native';
+import { Navigation } from './components/Navigation.js';
 
 export default function App() {
   const [fontsLoaded] = useFonts({
-    'Roboto-700': require('./Screens/fonts/Roboto-Bold.ttf'),
-    'Roboto-400': require('./Screens/fonts/Roboto-Regular.ttf'),
-    'Roboto-500': require('./Screens/fonts/Roboto-Medium.ttf'),
+    'Roboto-700': require('./assets/fonts/Roboto-Bold.ttf'),
+    'Roboto-400': require('./assets/fonts/Roboto-Regular.ttf'),
+    'Roboto-500': require('./assets/fonts/Roboto-Medium.ttf'),
   });
+
   if (!fontsLoaded) return null; // сначала загрузка шрифтов, потом все остальное
 
   return (
-    <View style={styles.container}>
-      <RegistrationScreen />
-      {/* <LoginScreen /> */}
+    <NavigationContainer style={styles.container}>
+      <Navigation />
+    </NavigationContainer>
 
-      <StatusBar style="auto" />
-    </View>
+    // <>
+    //   <View style={styles.container}>
+    //     <RegistrationScreen />
+    //     {/* <LoginScreen /> */}
+
+    //     <StatusBar style="auto" />
+    //   </View>
+    // </>
   );
 }
 

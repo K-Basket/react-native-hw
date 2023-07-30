@@ -1,3 +1,4 @@
+import { useNavigation } from '@react-navigation/native';
 import {
   TouchableOpacity,
   ImageBackground,
@@ -12,9 +13,9 @@ import {
   Image,
 } from 'react-native';
 import { useEffect, useState } from 'react';
-import imageBG from './img/photo-bg.jpg';
-import avatar from './img/avatar-1.jpg';
-import add from './img/add.png';
+import imageBG from '../../assets/img/photo-bg.jpg';
+import avatar from '../../assets/img/avatar-1.jpg';
+import add from '../../assets/img/add.png';
 
 const initialState = {
   login: '',
@@ -26,6 +27,8 @@ export function RegistrationScreen() {
   const [isShowKeyboard, setIsShowKeyboard] = useState(false);
   const [dataInput, setDataInput] = useState(initialState);
   const [isShowPass, setIsShowPass] = useState(true);
+
+  const navigation = useNavigation();
 
   useEffect(() => {
     const showSubscription = Keyboard.addListener('keyboardWillShow', () => {
@@ -45,28 +48,29 @@ export function RegistrationScreen() {
     setIsShowKeyboard(true);
   }
 
-  function onHideKeyboard() {
-    setIsShowKeyboard(false);
-    Keyboard.dismiss();
-  }
-
   function onSubmit() {
     if (!dataInput.login || !dataInput.email || !dataInput.password)
       return console.warn('Please fill in all fields!');
 
-    onHideKeyboard();
     setIsShowPass(true);
     console.log('state :>> ', dataInput);
     setDataInput(initialState);
+
+    navigation.navigate('Home');
   }
 
   function onLogin() {
-    console.log('Вже є акаунт? Увійти');
+    console.log('to Login');
+    navigation.navigate('Login');
   }
 
   return (
     <View style={styles.container}>
-      <TouchableWithoutFeedback onPress={onHideKeyboard}>
+      <TouchableWithoutFeedback
+        onPress={() => {
+          Keyboard.dismiss();
+        }}
+      >
         <ImageBackground style={styles.imageBG} source={imageBG}>
           <KeyboardAvoidingView
             style={styles.wrapForm}
@@ -246,6 +250,7 @@ const styles = StyleSheet.create({
   },
   linkTitle: {
     paddingTop: 16,
+    // alignSelf: 'flex-start', // вносит изменения, заданные родителькими
 
     fontFamily: 'Roboto-400',
     fontSize: 16,
