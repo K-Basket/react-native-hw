@@ -40,36 +40,30 @@ export function Home() {
 
   const optionsCreatePosts = {
     title: 'Створити публікацію',
-    tabBarIcon: ({ focused, size, color }) =>
-      !focused ? (
+    tabBarStyle: { display: 'none' },
+    tabBarIcon: ({ focused, size, color }) => (
+      <TouchableOpacity
+        style={{ ...styles.btn, width: focused ? 80 : 70 }}
+        activeOpacity={0.8}
+        onPress={() => console.log('tabBarIcon')}
+      >
+        <Feather name="plus" size={24} color="#fff" />
+      </TouchableOpacity>
+    ),
+    headerLeft: () => {
+      return (
         <TouchableOpacity
-          style={{ ...styles.btn, width: focused ? 80 : 70 }}
-          activeOpacity={0.8}
-          onPress={() => console.log('tabBarIcon')}
-        >
-          <Feather name="plus" size={24} color="#fff" />
-        </TouchableOpacity>
-      ) : (
-        <TouchableOpacity
-          style={{
-            ...styles.btn,
-            backgroundColor: '#F6F6F6',
-            width: focused ? 80 : 70,
+          style={{ marginLeft: 10 }}
+          activeOpacity={0.3}
+          onPress={() => {
+            console.log('here is log-out function');
+            navigation.navigate('Posts');
           }}
-          activeOpacity={0.8}
-          onPress={() => console.log('trash')}
         >
-          <Feather name="trash-2" size={24} color="#BDBDBD" />
+          <Feather name="arrow-left" size={24} color="#BDBDBD" />
         </TouchableOpacity>
-      ),
-
-    // <TouchableOpacity
-    //   style={{ ...styles.btn, width: focused ? 80 : 70 }}
-    //   activeOpacity={0.8}
-    //   onPress={() => console.log('tabBarIcon')}
-    // >
-    //   <Feather name="plus" size={24} color="#fff" />
-    // </TouchableOpacity>
+      );
+    },
   };
 
   const optionsProfile = {
