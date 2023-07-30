@@ -9,6 +9,27 @@ import { Button } from 'react-native';
 export function Navigation() {
   const MainStack = createStackNavigator(); // переходы мажду экранами
 
+  const optionsHome = {
+    headerShown: false,
+    title: 'Home page',
+    headerStyle: { backgroundColor: `#f5f5dc` },
+    headerTintColor: 'green',
+    headerTitleStyle: {
+      fontWeight: 'bold',
+      fontSize: 20,
+      color: '#ff8c00',
+    },
+    headerRight: () => {
+      return (
+        <Button
+          onPress={() => console.log('click Button')}
+          title="Press me"
+          color="black"
+        />
+      );
+    },
+  };
+
   return (
     <>
       <MainStack.Navigator initialRouteName="LoginScreen">
@@ -24,30 +45,7 @@ export function Navigation() {
           options={{ headerShown: false }}
         />
 
-        <MainStack.Screen
-          name="Home"
-          component={Home}
-          options={{
-            headerShown: false,
-            title: 'Home page',
-            headerStyle: { backgroundColor: `#f5f5dc` },
-            headerTintColor: 'green',
-            headerTitleStyle: {
-              fontWeight: 'bold',
-              fontSize: 20,
-              color: '#ff8c00',
-            },
-            headerRight: () => {
-              return (
-                <Button
-                  onPress={() => console.log('click Button')}
-                  title="Press me"
-                  color="black"
-                />
-              );
-            },
-          }}
-        />
+        <MainStack.Screen name="Home" component={Home} options={optionsHome} />
 
         <MainStack.Screen
           name="Comments"

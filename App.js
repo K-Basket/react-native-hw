@@ -2,16 +2,7 @@ import 'react-native-gesture-handler'; // должен быть в самом в
 import { NavigationContainer } from '@react-navigation/native';
 import { useFonts } from 'expo-font';
 import { StatusBar } from 'expo-status-bar';
-import {
-  ImageBackground,
-  Keyboard,
-  KeyboardAvoidingView,
-  StyleSheet,
-  TouchableWithoutFeedback,
-  View,
-} from 'react-native';
-import { RegistrationScreen } from './Screens/auth/RegistrationScreen.js';
-import { LoginScreen } from './Screens/auth/LoginScreen.js';
+import { StyleSheet } from 'react-native';
 import { Navigation } from './components/Navigation.js';
 
 export default function App() {
