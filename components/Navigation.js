@@ -3,7 +3,7 @@ import { RegistrationScreen } from '../Screens/auth/RegistrationScreen';
 import { LoginScreen } from '../Screens/auth/LoginScreen';
 import { CommentsScreen } from '../Screens/CommentsScreen';
 import { MapScreen } from '../Screens/MapScreen';
-import { Home } from '../Screens/Home';
+import { Home } from './Home';
 import { Button } from 'react-native';
 
 export function Navigation() {

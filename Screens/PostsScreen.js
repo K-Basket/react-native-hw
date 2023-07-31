@@ -1,11 +1,19 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import { Button, StyleSheet, Text, View } from 'react-native';
 
 export function PostsScreen() {
   console.log('Screen --> PostsScreen');
+  const navigation = useNavigation();
 
   return (
     <View style={styles.container}>
       <Text style={styles.text}>Page PostsScreen</Text>
+      <Button
+        title="go to map"
+        onPress={() => {
+          navigation.navigate('Map');
+        }}
+      />
     </View>
   );
 }
