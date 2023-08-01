@@ -24,8 +24,6 @@ export function CreatePostsScreen() {
   const [isShowKeyboard, setIsShowKeyboard] = useState(false);
   const [location, setLocation] = useState(null);
 
-  console.log('isShowKeyboard :>> ', isShowKeyboard);
-
   useEffect(() => {
     // запрос на разрешение использовать камеру и сохранять в девайс фотки
     (async () => {
@@ -75,156 +73,124 @@ export function CreatePostsScreen() {
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
       <View style={styles.container}>
-        <View style={styles.wrapCamera}>
-          <Camera style={styles.camera} type={type} ref={setCameraRef}>
-            <TouchableOpacity
-              style={styles.btnCamera}
-              activeOpacity={0.8}
-              onPress={takePhoto}
-            >
-              <Feather name="camera" size={24} color="#BDBDBD" />
-            </TouchableOpacity>
-          </Camera>
+        <View>
+          <View style={styles.wrapCamera}>
+            <Camera style={styles.camera} type={type} ref={setCameraRef}>
+              <TouchableOpacity
+                style={styles.btnCamera}
+                activeOpacity={0.8}
+                onPress={takePhoto}
+              >
+                <Feather name="camera" size={24} color="#BDBDBD" />
+              </TouchableOpacity>
+            </Camera>
 
-          <View style={styles.wrapBtnFlip}>
-            <TouchableOpacity
-              style={styles.btnFlip}
-              activeOpacity={0.8}
-              onPress={() => {
-                console.log('flip back/front camera');
-                setType(
-                  type === CameraType.back ? CameraType.front : CameraType.back
-                );
-              }}
-            >
-              <Ionicons
-                name="ios-camera-reverse-outline"
+            <View style={styles.wrapBtnFlip}>
+              <TouchableOpacity
+                style={styles.btnFlip}
+                activeOpacity={0.8}
+                onPress={() => {
+                  console.log('flip back/front camera');
+                  setType(
+                    type === CameraType.back
+                      ? CameraType.front
+                      : CameraType.back
+                  );
+                }}
+              >
+                <Ionicons
+                  name="ios-camera-reverse-outline"
+                  size={24}
+                  color="#BDBDBD"
+                />
+              </TouchableOpacity>
+            </View>
+
+            <View style={styles.wrapBtnDownloadPhoto}>
+              <TouchableOpacity
+                activeOpacity={0.5}
+                onPress={() => {
+                  console.log('download Photo');
+                }}
+              >
+                <Text style={styles.btnDownloadPhoto}>Завантажте фото</Text>
+              </TouchableOpacity>
+            </View>
+
+            <View style={{ marginTop: 32 }}>
+              <TextInput
+                style={styles.input}
+                textAlign="left"
+                placeholder="Назва..."
+                onFocus={() => {
+                  setIsShowKeyboard(true);
+                }}
+                value={inputTitlePhoto}
+                onChangeText={value => setinputTitlePhoto(value)}
+              />
+            </View>
+
+            <View style={{ marginTop: 16 }}>
+              <TextInput
+                style={{ ...styles.input, paddingLeft: 28 }}
+                textAlign="left"
+                placeholder="Місцевість..."
+                // onFocus={() => {
+                //   setIsShowKeyboard(true);
+                // }}
+                // value={inputTitlePhoto}
+                // onChangeText={value => setinputTitlePhoto(value)}
+              />
+              <Feather
+                style={{ position: 'absolute', top: '25%', left: 2 }}
+                name="map-pin"
                 size={24}
                 color="#BDBDBD"
               />
-            </TouchableOpacity>
-          </View>
+            </View>
 
-          <View style={styles.wrapBtnDownloadPhoto}>
-            <TouchableOpacity
-              activeOpacity={0.5}
-              onPress={() => {
-                console.log('download Photo');
+            <View
+              style={{
+                flexDirection: 'column',
+                alignContent: 'space-between',
               }}
             >
-              <Text style={styles.btnDownloadPhoto}>Завантажте фото</Text>
-            </TouchableOpacity>
+              <View>
+                <TouchableOpacity
+                  style={styles.btn}
+                  activeOpacity={0.8}
+                  onPress={() => {
+                    console.log('Publish');
+                  }}
+                >
+                  <Text style={styles.btnTitle}>Опубліковати</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
           </View>
+        </View>
 
-          <View style={{ marginTop: 32 }}>
-            <TextInput
-              style={styles.input}
-              textAlign="left"
-              placeholder="Назва..."
-              onFocus={() => {
-                setIsShowKeyboard(true);
-              }}
-              value={inputTitlePhoto}
-              onChangeText={value => setinputTitlePhoto(value)}
-            />
-          </View>
-
-          <View style={{ marginTop: 16 }}>
-            <TextInput
-              style={styles.input}
-              textAlign="left"
-              placeholder="Місцевість..."
-              // onFocus={() => {
-              //   setIsShowKeyboard(true);
-              // }}
-              // value={inputTitlePhoto}
-              // onChangeText={value => setinputTitlePhoto(value)}
-            />
-          </View>
-
-          <View
-            style={{
-              // flex: 1,
-              alignContent: 'space-between',
-              // justifyContent: 'center',
+        <View style={{ alignItems: 'center' }}>
+          <TouchableOpacity
+            style={styles.btnTrush}
+            activeOpacity={0.8}
+            onPress={() => {
+              console.log('trash');
             }}
           >
-            <View>
-              <TouchableOpacity
-                style={styles.btn}
-                activeOpacity={0.8}
-                onPress={() => {
-                  console.log('Publish');
-                }}
-              >
-                <Text style={styles.btnTitle}>Опубліковати</Text>
-              </TouchableOpacity>
-            </View>
-
-            <View>
-              <TouchableOpacity
-                style={styles.btnTrush}
-                activeOpacity={0.8}
-                onPress={() => {
-                  console.log('trash');
-                }}
-              >
-                <Feather name="trash-2" size={24} color="#BDBDBD" />
-              </TouchableOpacity>
-            </View>
-          </View>
+            <Feather name="trash-2" size={24} color="#BDBDBD" />
+          </TouchableOpacity>
         </View>
       </View>
     </TouchableWithoutFeedback>
   );
 }
-// export function CreatePostsScreen() {
-//   console.log('Screen --> CreatePostsScreen');
-//   const [camera, setCamera] = useState(null);
-//   const [photo, setPhoto] = useState('');
-
-//   async function takePhoto() {
-//     console.log('took a Photo');
-//     const photoCamera = await camera.takePictureAsync();
-//     setPhoto(photoCamera.uri); // сохраняем в state ссылку на сделанное фото камерой
-//     console.log('result :>> ', photo);
-//   }
-
-//   return (
-//     <>
-//       <View>
-//         <Camera style={styles.camera} ref={setCamera}>
-//           <TouchableOpacity
-//             style={styles.btnCamera}
-//             activeOpacity={0.8}
-//             onPress={takePhoto}
-//           >
-//             <Feather name="camera" size={24} color="#BDBDBD" />
-//           </TouchableOpacity>
-//         </Camera>
-//       </View>
-//       <View style={styles.container}>
-//         <Text style={styles.text}>Page CreatePostsScreen</Text>
-//         <TouchableOpacity
-//           style={styles.btn}
-//           activeOpacity={0.8}
-//           onPress={() => {
-//             console.log('trash');
-//           }}
-//         >
-//           <Feather name="trash-2" size={24} color="#BDBDBD" />
-//         </TouchableOpacity>
-//       </View>
-//     </>
-//   );
-// }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    // alignItems: 'center',
-    // justifyContent: 'space-between',
-    // backgroundColor: 'salmon',
+    justifyContent: 'space-between',
+    backgroundColor: '#fff',
   },
   wrapCamera: {
     marginHorizontal: 16,
@@ -233,8 +199,8 @@ const styles = StyleSheet.create({
   camera: {
     alignItems: 'center',
     justifyContent: 'center',
-    // width: '100%',
     height: 240,
+    overflow: 'hidden',
     borderWidth: 1,
     borderColor: '#E8E8E8',
     borderRadius: 8,
@@ -285,10 +251,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#FF6C00',
-    height: 50,
+    // height: 50,
     borderRadius: 100,
   },
   btnTitle: {
+    paddingVertical: 16,
     fontSize: 16,
     color: '#fff',
   },
