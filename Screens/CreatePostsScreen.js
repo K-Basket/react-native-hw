@@ -1,6 +1,6 @@
 import { useNavigation } from '@react-navigation/native';
 import { Feather } from '@expo/vector-icons';
-import { StyleSheet, Text, View } from 'react-native';
+import { Image, StyleSheet, Text, View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { Camera, CameraType } from 'expo-camera';
 import { useEffect, useState } from 'react';
@@ -13,11 +13,9 @@ export function CreatePostsScreen() {
   // console.log('type2-->', CameraType.front);
 
   const [hasPermission, setHasPermission] = useState(null);
-  const [cameraRef, setCameraRef] = useState(null);
-  const [type, setType] = useState(Camera.Constants.Type.back);
-
-  // const [camera, setCamera] = useState(null);
-  // const [photo, setPhoto] = useState('');
+  const [cameraRef, setCameraRef] = useState(null); // снимок c камеры
+  const [photo, setPhoto] = useState('');
+  const [type, setType] = useState(CameraType.back);
 
   useEffect(() => {
     // запрос на разрешение использовать камеру и сохранять в девайс фотки
@@ -40,8 +38,9 @@ export function CreatePostsScreen() {
     console.log('took a Photo');
 
     if (cameraRef) {
-      const { uri } = await cameraRef.takePictureAsync(); // запись в state снимка
-      await MediaLibrary.createAssetAsync(uri); // сохранение снимка в библиотеку телефона
+      const { uri } = await cameraRef.takePictureAsync(); // uri - ссылка на снимок
+      const photoLib = await MediaLibrary.createAssetAsync(uri); // сохранение снимка в библиотеку телефона
+      setPhoto(photoLib);
     }
   }
 
@@ -49,6 +48,17 @@ export function CreatePostsScreen() {
     <>
       <View>
         <Camera style={styles.camera} type={type} ref={setCameraRef}>
+          <View
+            style={{
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              borderColor: '#fff',
+              borderWidth: 1,
+            }}
+          >
+            <Image style={{ height: 100, width: 150 }} source={photo} />
+          </View>
           <TouchableOpacity
             style={styles.btnCamera}
             activeOpacity={0.8}
