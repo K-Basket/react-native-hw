@@ -8,12 +8,12 @@ export function ProfileScreen() {
   return (
     <View style={styles.container}>
       <Text style={styles.text}>Page ProfileScreen</Text>
-      <Button
+      {/* <Button
         title="go to map"
         onPress={() => {
           navigation.navigate('Map');
         }}
-      />
+      /> */}
     </View>
   );
 }

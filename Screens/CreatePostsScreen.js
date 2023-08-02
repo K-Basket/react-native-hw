@@ -18,11 +18,14 @@ import * as Location from 'expo-location';
 export function CreatePostsScreen() {
   const [hasPermission, setHasPermission] = useState(null);
   const [cameraRef, setCameraRef] = useState(null); // снимок c камеры
-  const [photo, setPhoto] = useState('');
+  const [photo, setPhoto] = useState(null);
   const [type, setType] = useState(CameraType.back);
-  const [inputTitlePhoto, setinputTitlePhoto] = useState('');
+  const [inputTitlePhoto, setInputTitlePhoto] = useState('');
+  const [inputLocation, setInputLocation] = useState('');
   const [isShowKeyboard, setIsShowKeyboard] = useState(false);
   const [location, setLocation] = useState(null);
+
+  const navigation = useNavigation();
 
   useEffect(() => {
     // запрос на разрешение использовать камеру и сохранять в девайс фотки
@@ -68,6 +71,20 @@ export function CreatePostsScreen() {
       };
       setLocation(coords);
     }
+  }
+  // console.log('location :>> ', location, photo);
+  // console.log('photo :>> ', photo);
+
+  function onPublish() {
+    console.log('Publish', location);
+    navigation.navigate('Posts', {
+      location,
+      photo,
+      inputTitlePhoto,
+      inputLocation,
+    }); // передача данных на страцу Posts
+    setInputTitlePhoto('');
+    setInputLocation('');
   }
 
   return (
@@ -126,7 +143,7 @@ export function CreatePostsScreen() {
                   setIsShowKeyboard(true);
                 }}
                 value={inputTitlePhoto}
-                onChangeText={value => setinputTitlePhoto(value)}
+                onChangeText={value => setInputTitlePhoto(value)}
               />
             </View>
 
@@ -135,11 +152,11 @@ export function CreatePostsScreen() {
                 style={{ ...styles.input, paddingLeft: 28 }}
                 textAlign="left"
                 placeholder="Місцевість..."
-                // onFocus={() => {
-                //   setIsShowKeyboard(true);
-                // }}
-                // value={inputTitlePhoto}
-                // onChangeText={value => setinputTitlePhoto(value)}
+                onFocus={() => {
+                  setIsShowKeyboard(true);
+                }}
+                value={inputLocation}
+                onChangeText={value => setInputLocation(value)}
               />
               <Feather
                 style={{ position: 'absolute', top: '25%', left: 2 }}
@@ -159,9 +176,7 @@ export function CreatePostsScreen() {
                 <TouchableOpacity
                   style={styles.btn}
                   activeOpacity={0.8}
-                  onPress={() => {
-                    console.log('Publish');
-                  }}
+                  onPress={onPublish}
                 >
                   <Text style={styles.btnTitle}>Опубліковати</Text>
                 </TouchableOpacity>
