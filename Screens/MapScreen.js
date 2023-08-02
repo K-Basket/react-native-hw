@@ -18,23 +18,25 @@ export function MapScreen() {
 
   return (
     <View style={styles.container}>
-      <MapView
-        style={styles.mapView}
-        initialRegion={{
-          latitude: `${locationPost.latitude}`, // широта
-          longitude: `${locationPost.longitude}`, // долгота
-          latitudeDelta: 0.0922, // степень приближения места на карте
-          longitudeDelta: 0.0421, // степень приближения места на карте
-        }}
-      >
-        <Marker
-          coordinate={{
-            latitude: `${locationPost.latitude}`,
-            longitude: `${locationPost.longitude}`,
+      {locationPost.length !== 0 && (
+        <MapView
+          style={styles.mapView}
+          initialRegion={{
+            latitude: `${locationPost.latitude}`, // широта
+            longitude: `${locationPost.longitude}`, // долгота
+            latitudeDelta: 0.0922, // степень приближения места на карте
+            longitudeDelta: 0.0421, // степень приближения места на карте
           }}
-          title="PhotoTitle"
-        />
-      </MapView>
+        >
+          <Marker
+            coordinate={{
+              latitude: `${locationPost.latitude}`,
+              longitude: `${locationPost.longitude}`,
+            }}
+            title="PhotoTitle"
+          />
+        </MapView>
+      )}
     </View>
   );
 }
