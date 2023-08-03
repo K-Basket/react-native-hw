@@ -10,6 +10,7 @@ import {
   FlatList,
   TouchableOpacity,
 } from 'react-native';
+import avatar from '../assets/img/avatar-1.jpg';
 
 export function PostsScreen() {
   const [posts, setPosts] = useState([]);
@@ -21,26 +22,54 @@ export function PostsScreen() {
   useEffect(() => {
     if (params) {
       setPosts(prev => [...prev, params]);
-      console.log('params :>>:>>:>>:>> ', params);
     }
   }, [params]);
 
-  // console.log('location :>> ', params.location);
-
   return (
     <View style={styles.container}>
+      <View
+        style={{
+          flexDirection: 'row',
+          alignItems: 'center',
+          marginVertical: 32,
+          paddingHorizontal: 16,
+          width: '100%',
+        }}
+      >
+        <Image
+          style={{ width: 60, height: 60, borderRadius: 16 }}
+          source={avatar}
+        />
+        <View style={{ marginLeft: 8 }}>
+          <Text
+            style={{ fontFamily: 'Roboto-700', fontSize: 13, color: '#212121' }}
+          >
+            Natali Romanova
+          </Text>
+          <Text
+            style={{
+              fontFamily: 'Roboto-400',
+              fontSize: 11,
+              color: 'rgba(33, 33, 33, 0.80)',
+            }}
+          >
+            email@example.com
+          </Text>
+        </View>
+      </View>
+
       <FlatList
         data={posts}
         keyExtractor={(item, indx) => indx.toString()}
         renderItem={({ item }) => (
-          <View style={{ marginTop: 34 }}>
+          <View>
             <View style={styles.wrapImage}>
               <Image
                 source={item.photo}
                 style={{
                   marginTop: 10,
-                  width: 350,
-                  height: 200,
+                  width: 400,
+                  height: 240,
                   borderColor: 'green',
                   borderWidth: 1,
                   borderRadius: 8,
@@ -127,6 +156,16 @@ export function PostsScreen() {
                         }}
                       >
                         {item.inputLocation}
+                      </Text>
+
+                      <Text
+                        style={{
+                          fontFamily: 'Roboto-400',
+                          fontSize: 10,
+                          color: '#212121',
+                        }}
+                      >
+                        {`${item.address.city}, ${item.address.country}`}
                       </Text>
                     </View>
                   </TouchableOpacity>

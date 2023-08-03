@@ -77,10 +77,8 @@ export function CreatePostsScreen() {
       setAddress(address[0]);
     }
   }
-  console.log('location :>> ', location);
-  console.log('address :>> ', address);
-
-  // console.log('photo :>> ', photo);
+  // console.log('location :>> ', location);
+  // console.log('address :>> ', address);
 
   function onPublish() {
     console.log('Publish', location);
@@ -89,6 +87,7 @@ export function CreatePostsScreen() {
       photo,
       inputTitlePhoto,
       inputLocation,
+      address,
     }); // передача данных на страцу Posts
     setInputTitlePhoto('');
     setInputLocation('');
