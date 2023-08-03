@@ -53,14 +53,12 @@ export function RegistrationScreen() {
       return console.warn('Please fill in all fields!');
 
     setIsShowPass(true);
-    console.log('state :>> ', dataInput);
     setDataInput(initialState);
 
     navigation.navigate('Home');
   }
 
   function onLogin() {
-    console.log('to Login');
     navigation.navigate('Login');
   }
 

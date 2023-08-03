@@ -1,19 +1,9 @@
-import { useNavigation } from '@react-navigation/native';
-import { Button, StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 
 export function ProfileScreen() {
-  console.log('Screen --> ProfileScreen');
-  const navigation = useNavigation();
-
   return (
     <View style={styles.container}>
       <Text style={styles.text}>Page ProfileScreen</Text>
-      {/* <Button
-        title="go to map"
-        onPress={() => {
-          navigation.navigate('Map');
-        }}
-      /> */}
     </View>
   );
 }

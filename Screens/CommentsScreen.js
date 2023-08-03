@@ -1,8 +1,6 @@
 import { StyleSheet, Text, View } from 'react-native';
 
 export function CommentsScreen() {
-  console.log('Screen --> CommentsScreen');
-
   return (
     <View style={styles.container}>
       <Text style={styles.text}>CommentsScreen</Text>

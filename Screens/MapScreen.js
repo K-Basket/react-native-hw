@@ -1,20 +1,9 @@
 import { useRoute } from '@react-navigation/native';
 import { StyleSheet, View } from 'react-native';
-import MapView, { Marker, addressForCoordinate } from 'react-native-maps';
+import MapView, { Marker } from 'react-native-maps';
 
 export function MapScreen() {
-  console.log('Screen --> MapScreen');
   const { params } = useRoute(); // принимаем данные из др Screens
-
-  console.log('::::::>>>>>> ', params.location);
-
-  // (async () => {
-  //   const address = await getCamera();
-  //   return address;
-  // })();
-
-  // addressForCoordinate(params.location);
-  // const test = addressForCoordinate(params.location);
 
   return (
     <View style={styles.container}>

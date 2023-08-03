@@ -2,7 +2,6 @@ import { useNavigation, useRoute } from '@react-navigation/native';
 import { Feather } from '@expo/vector-icons';
 import { useEffect, useState } from 'react';
 import {
-  Button,
   Image,
   StyleSheet,
   Text,
@@ -14,8 +13,6 @@ import avatar from '../assets/img/avatar-1.jpg';
 
 export function PostsScreen() {
   const [posts, setPosts] = useState([]);
-
-  console.log('Screen --> PostsScreen');
   const navigation = useNavigation();
   const { params } = useRoute(); // принимаем данные из др Screens
 
@@ -183,7 +180,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    // justifyContent: 'center',
     backgroundColor: '#fff',
   },
   wrapImage: {},

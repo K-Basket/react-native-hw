@@ -1,7 +1,6 @@
 import 'react-native-gesture-handler'; // должен быть в самом верху
 import { NavigationContainer } from '@react-navigation/native';
 import { useFonts } from 'expo-font';
-import { StatusBar } from 'expo-status-bar';
 import { StyleSheet } from 'react-native';
 import { Navigation } from './components/Navigation.js';
 
@@ -18,15 +17,6 @@ export default function App() {
     <NavigationContainer style={styles.container}>
       <Navigation />
     </NavigationContainer>
-
-    // <>
-    //   <View style={styles.container}>
-    //     <RegistrationScreen />
-    //     {/* <LoginScreen /> */}
-
-    //     <StatusBar style="auto" />
-    //   </View>
-    // </>
   );
 }
 
@@ -34,7 +24,5 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#ffeafeff',
-    // alignItems: "center",
-    // justifyContent: "center",
   },
 });

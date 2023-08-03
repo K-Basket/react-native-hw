@@ -2,7 +2,6 @@ import { useNavigation } from '@react-navigation/native';
 import { Feather } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
 import {
-  Image,
   Keyboard,
   StyleSheet,
   Text,
@@ -14,7 +13,6 @@ import { Camera, CameraType } from 'expo-camera';
 import { useEffect, useState } from 'react';
 import * as MediaLibrary from 'expo-media-library';
 import * as Location from 'expo-location';
-import MapView, { getCamera } from 'react-native-maps';
 
 export function CreatePostsScreen() {
   const [hasPermission, setHasPermission] = useState(null);
@@ -23,7 +21,6 @@ export function CreatePostsScreen() {
   const [type, setType] = useState(CameraType.back);
   const [inputTitlePhoto, setInputTitlePhoto] = useState('');
   const [inputLocation, setInputLocation] = useState('');
-  const [isShowKeyboard, setIsShowKeyboard] = useState(false);
   const [location, setLocation] = useState(null);
   const [address, setAddress] = useState(null);
 
@@ -59,8 +56,6 @@ export function CreatePostsScreen() {
   }
 
   async function takePhoto() {
-    console.log('took a Photo');
-
     if (cameraRef) {
       const { uri } = await cameraRef.takePictureAsync(); // uri - ссылка на снимок
       const photoLib = await MediaLibrary.createAssetAsync(uri); // сохранение снимка в библиотеку телефона
@@ -77,11 +72,17 @@ export function CreatePostsScreen() {
       setAddress(address[0]);
     }
   }
-  // console.log('location :>> ', location);
-  // console.log('address :>> ', address);
+
+  function onFlipCamera() {
+    setType(type === CameraType.back ? CameraType.front : CameraType.back);
+  }
 
   function onPublish() {
-    console.log('Publish', location);
+    if (!photo || !location || !inputLocation || !inputTitlePhoto) {
+      console.warn('You need to take a photo and fill all the fields!');
+      return;
+    }
+
     navigation.navigate('Posts', {
       location,
       photo,
@@ -91,6 +92,7 @@ export function CreatePostsScreen() {
     }); // передача данных на страцу Posts
     setInputTitlePhoto('');
     setInputLocation('');
+    setPhoto(null);
   }
 
   return (
@@ -112,14 +114,7 @@ export function CreatePostsScreen() {
               <TouchableOpacity
                 style={styles.btnFlip}
                 activeOpacity={0.8}
-                onPress={() => {
-                  console.log('flip back/front camera');
-                  setType(
-                    type === CameraType.back
-                      ? CameraType.front
-                      : CameraType.back
-                  );
-                }}
+                onPress={onFlipCamera}
               >
                 <Ionicons
                   name="ios-camera-reverse-outline"
@@ -145,9 +140,6 @@ export function CreatePostsScreen() {
                 style={styles.input}
                 textAlign="left"
                 placeholder="Назва..."
-                onFocus={() => {
-                  setIsShowKeyboard(true);
-                }}
                 value={inputTitlePhoto}
                 onChangeText={value => setInputTitlePhoto(value)}
               />
@@ -158,9 +150,6 @@ export function CreatePostsScreen() {
                 style={{ ...styles.input, paddingLeft: 28 }}
                 textAlign="left"
                 placeholder="Місцевість..."
-                onFocus={() => {
-                  setIsShowKeyboard(true);
-                }}
                 value={inputLocation}
                 onChangeText={value => setInputLocation(value)}
               />
@@ -180,11 +169,27 @@ export function CreatePostsScreen() {
             >
               <View>
                 <TouchableOpacity
-                  style={styles.btn}
+                  style={{
+                    ...styles.btn,
+                    backgroundColor:
+                      photo && location && inputLocation && inputTitlePhoto
+                        ? '#FF6C00'
+                        : '#F6F6F6',
+                  }}
                   activeOpacity={0.8}
                   onPress={onPublish}
                 >
-                  <Text style={styles.btnTitle}>Опубліковати</Text>
+                  <Text
+                    style={{
+                      ...styles.btnTitle,
+                      color:
+                        photo && location && inputLocation && inputTitlePhoto
+                          ? '#FFFFFF'
+                          : '#BDBDBD',
+                    }}
+                  >
+                    Опубліковати
+                  </Text>
                 </TouchableOpacity>
               </View>
             </View>
@@ -259,20 +264,17 @@ const styles = StyleSheet.create({
   input: {
     paddingLeft: 16,
     height: 50,
-    borderWidth: 1,
-    borderRadius: 6,
     fontFamily: 'Roboto-400',
     fontSize: 16,
+    borderBottomWidth: 1,
+    borderRadius: 6,
     color: '#212121',
     borderColor: '#E8E8E8',
-    backgroundColor: '#F6F6F6',
   },
   btn: {
     marginTop: 32,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#FF6C00',
-    // height: 50,
     borderRadius: 100,
   },
   btnTitle: {
