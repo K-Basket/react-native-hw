@@ -14,6 +14,7 @@ import { Camera, CameraType } from 'expo-camera';
 import { useEffect, useState } from 'react';
 import * as MediaLibrary from 'expo-media-library';
 import * as Location from 'expo-location';
+import MapView, { getCamera } from 'react-native-maps';
 
 export function CreatePostsScreen() {
   const [hasPermission, setHasPermission] = useState(null);
@@ -24,6 +25,7 @@ export function CreatePostsScreen() {
   const [inputLocation, setInputLocation] = useState('');
   const [isShowKeyboard, setIsShowKeyboard] = useState(false);
   const [location, setLocation] = useState(null);
+  const [address, setAddress] = useState(null);
 
   const navigation = useNavigation();
 
@@ -70,9 +72,14 @@ export function CreatePostsScreen() {
         longitude: location.coords.longitude,
       };
       setLocation(coords);
+
+      const address = await Location.reverseGeocodeAsync(coords);
+      setAddress(address[0]);
     }
   }
-  // console.log('location :>> ', location, photo);
+  console.log('location :>> ', location);
+  console.log('address :>> ', address);
+
   // console.log('photo :>> ', photo);
 
   function onPublish() {
