@@ -48,7 +48,6 @@ export function LoginScreen() {
       return console.warn('Please fill in all fields!');
 
     setIsShowPass(true);
-    console.log('state :>> ', dataInput);
     setDataInput(initialState);
 
     navigation.navigate('Home');
@@ -56,7 +55,6 @@ export function LoginScreen() {
 
   function onLogin() {
     navigation.navigate('Registration'); // 'Registration' - имя маршрута (Navigation.js)
-    console.log('to Registration');
   }
 
   return (

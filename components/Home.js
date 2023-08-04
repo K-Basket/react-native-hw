@@ -1,11 +1,11 @@
-import { Button, StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { useNavigation } from '@react-navigation/native';
 import { Feather } from '@expo/vector-icons';
 
-import { PostsScreen } from './PostsScreen';
-import { CreatePostsScreen } from './CreatePostsScreen';
-import { ProfileScreen } from './ProfileScreen';
+import { PostsScreen } from '../Screens/PostsScreen';
+import { CreatePostsScreen } from '../Screens/CreatePostsScreen';
+import { ProfileScreen } from '../Screens/ProfileScreen';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
 export function Home() {
@@ -40,6 +40,8 @@ export function Home() {
 
   const optionsCreatePosts = {
     title: 'Створити публікацію',
+    tabBarStyle: { display: 'none' },
+
     tabBarIcon: ({ focused, size, color }) => (
       <TouchableOpacity
         style={{ ...styles.btn, width: focused ? 80 : 70 }}
@@ -49,10 +51,27 @@ export function Home() {
         <Feather name="plus" size={24} color="#fff" />
       </TouchableOpacity>
     ),
+
+    headerLeft: () => {
+      return (
+        <TouchableOpacity
+          style={{ marginLeft: 10 }}
+          activeOpacity={0.3}
+          onPress={() => {
+            console.log('here is log-out function');
+            navigation.navigate('Posts');
+          }}
+        >
+          <Feather name="arrow-left" size={24} color="#BDBDBD" />
+        </TouchableOpacity>
+      );
+    },
   };
 
   const optionsProfile = {
     headerShown: false,
+    tabBarAccessibilityLabel: true,
+
     tabBarIcon: ({ focused, size, color }) => (
       <Feather
         style={{ alignSelf: 'flex-start', marginLeft: 39 }}
@@ -65,8 +84,8 @@ export function Home() {
 
   return (
     <Tabs.Navigator
-      screenOptions={{ tabBarShowLabel: false }}
       initialRouteName="Posts"
+      screenOptions={{ tabBarShowLabel: false }}
     >
       <Tabs.Screen name="Posts" component={PostsScreen} options={optionPosts} />
       <Tabs.Screen

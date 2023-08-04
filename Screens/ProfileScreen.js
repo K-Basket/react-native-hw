@@ -1,8 +1,6 @@
 import { StyleSheet, Text, View } from 'react-native';
 
 export function ProfileScreen() {
-  console.log('Screen --> ProfileScreen');
-
   return (
     <View style={styles.container}>
       <Text style={styles.text}>Page ProfileScreen</Text>

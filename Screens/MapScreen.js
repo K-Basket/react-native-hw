@@ -1,23 +1,38 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { useRoute } from '@react-navigation/native';
+import { StyleSheet, View } from 'react-native';
+import MapView, { Marker } from 'react-native-maps';
 
 export function MapScreen() {
-  console.log('Screen --> MapScreen');
+  const { params } = useRoute(); // принимаем данные из др Screens
 
   return (
-    <View>
-      <Text style={styles.test}>Page MapScreen</Text>
+    <View style={styles.container}>
+      <MapView
+        style={styles.mapView}
+        initialRegion={{
+          latitude: `${params.location.latitude}`, // широта
+          longitude: `${params.location.longitude}`, // долгота
+          latitudeDelta: 0.0922, // степень приближения места на карте
+          longitudeDelta: 0.0421, // степень приближения места на карте
+        }}
+      >
+        <Marker
+          coordinate={{
+            latitude: `${params.location.latitude}`,
+            longitude: `${params.location.longitude}`,
+          }}
+          title="PhotoTitle"
+        />
+      </MapView>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  test: {
-    marginVertical: 20,
-    textAlign: 'center',
-    borderWidth: 1,
-    borderColor: `#8a2be2`,
-    fontFamily: 'Roboto-700',
-    fontSize: 20,
-    color: '#9370db',
+  container: {
+    flex: 1,
+  },
+  mapView: {
+    flex: 1,
   },
 });
