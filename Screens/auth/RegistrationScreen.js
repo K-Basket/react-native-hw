@@ -16,6 +16,8 @@ import { useEffect, useState } from 'react';
 import imageBG from '../../assets/img/photo-bg.jpg';
 import avatar from '../../assets/img/avatar-1.jpg';
 import add from '../../assets/img/add.png';
+import { useDispatch } from 'react-redux';
+import { authSignUpUser } from '../../redux/auth/operations';
 
 const initialState = {
   login: '',
@@ -29,6 +31,7 @@ export function RegistrationScreen() {
   const [isShowPass, setIsShowPass] = useState(true);
 
   const navigation = useNavigation();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const showSubscription = Keyboard.addListener('keyboardWillShow', () => {
@@ -52,10 +55,15 @@ export function RegistrationScreen() {
     if (!dataInput.login || !dataInput.email || !dataInput.password)
       return console.warn('Please fill in all fields!');
 
+    // ============
+    dispatch(authSignUpUser(dataInput));
+
     setIsShowPass(true);
     setDataInput(initialState);
 
-    navigation.navigate('Home');
+    console.log('dataInput :>> ', dataInput);
+
+    if (false) navigation.navigate('Home'); // если auth тогда переходим на Home
   }
 
   function onLogin() {
