@@ -17,7 +17,8 @@ export function Navigation() {
   onAuthStateChanged(auth, user => {
     if (user) {
       const uid = user.uid;
-      console.log('uid :>> ', uid);
+      // console.log('uid :>> ', uid);
+      console.log('useroOnAuthStateChanged :>> ', user);
       // ...
     } else {
       // User is signed out

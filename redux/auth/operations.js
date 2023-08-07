@@ -3,14 +3,23 @@ import {
   signInWithEmailAndPassword,
 } from 'firebase/auth';
 import { auth } from '../../firebase/config';
+import { useDispatch } from 'react-redux';
+import { sliceAuth } from './sliceAuth';
+// const dispatch = useDispatch();
 
 // создаем пользователя в базе firebase
 export const authSignUpUser =
   ({ login, email, password }) =>
   async (dispatch, getState) => {
     try {
-      const user = await createUserWithEmailAndPassword(auth, email, password);
-      console.log('user :>> ', user);
+      const { user } = await createUserWithEmailAndPassword(
+        auth,
+        login,
+        email,
+        password
+      );
+      dispatch(sliceAuth.actions.updateUserProfile({ userId: user.uid }));
+      // console.log('user.uid :>> ', user.uid);
     } catch (error) {
       throw error.message;
     }
@@ -22,7 +31,7 @@ export const authSignInUser =
   async (dispatch, getState) => {
     try {
       const user = await signInWithEmailAndPassword(auth, email, password);
-      console.log('userLogin :>> ', user);
+      // console.log('userLogin :>> ', user);
     } catch (error) {
       throw error.message;
     }
