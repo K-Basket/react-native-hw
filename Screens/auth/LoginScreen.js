@@ -51,19 +51,19 @@ export function LoginScreen() {
 
   // ======================= Эту проверку сделать в Navigation.js, а сюда передать чз  Redux
 
-  const auth = getAuth();
+  // const auth = getAuth();
 
-  onAuthStateChanged(auth, user => {
-    if (user) {
-      const uid = user.uid;
-      setUser(true);
-      // ...
-    } else {
-      // User is signed out
-      // ...
-      setUser(false);
-    }
-  }); // проверка аутентификации пользователя
+  // onAuthStateChanged(auth, user => {
+  //   if (user) {
+  //     const uid = user.uid;
+  //     setUser(true);
+  //     // ...
+  //   } else {
+  //     // User is signed out
+  //     // ...
+  //     setUser(false);
+  //   }
+  // }); // проверка аутентификации пользователя
 
   // =======================
 
@@ -76,7 +76,7 @@ export function LoginScreen() {
     setIsShowPass(true);
     setDataInput(initialState);
 
-    if (user) navigation.navigate('Home');
+    // if (user) navigation.navigate('Home');
   }
 
   function onLogin() {

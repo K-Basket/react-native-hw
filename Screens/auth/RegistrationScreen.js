@@ -16,7 +16,7 @@ import { useEffect, useState } from 'react';
 import imageBG from '../../assets/img/photo-bg.jpg';
 import avatar from '../../assets/img/avatar-1.jpg';
 import add from '../../assets/img/add.png';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { authSignUpUser } from '../../redux/auth/operations.js';
 
 const initialState = {
@@ -47,6 +47,13 @@ export function RegistrationScreen() {
     };
   }, []);
 
+  // взять данные из Store Redux
+  const storeUseeId = useSelector(state => state.auth.userId);
+  const storeNickname = useSelector(state => state.auth.nickName);
+  // const isLoggetInState = useSelector(state => state.auth.isLoggetIn);
+
+  // console.log('stateregistration :>> ', isLoggetInState, storeNickname);
+
   function onShowKeyboard() {
     setIsShowKeyboard(true);
   }
@@ -55,8 +62,7 @@ export function RegistrationScreen() {
     if (!dataInput.login || !dataInput.email || !dataInput.password)
       return console.warn('Please fill in all fields!');
 
-    // ============
-
+    // отправляет данные input для регистрации Usera
     dispatch(authSignUpUser(dataInput));
 
     setIsShowPass(true);
@@ -64,7 +70,7 @@ export function RegistrationScreen() {
 
     console.log('dataInput :>> ', dataInput);
 
-    if (false) navigation.navigate('Home'); // если auth тогда переходим на Home
+    // if (isLoggetInState) navigation.navigate('Home'); // если auth тогда переходим на Home
   }
 
   function onLogin() {

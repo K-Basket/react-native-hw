@@ -5,26 +5,22 @@ import { CommentsScreen } from '../Screens/CommentsScreen';
 import { MapScreen } from '../Screens/MapScreen';
 import { Home } from './Home';
 import { Button } from 'react-native';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
+import { useDispatch, useSelector } from 'react-redux';
+import { authStateChangeUser } from '../redux/auth/operations';
 
 export function Navigation() {
-  const [user, setUser] = useState(); // вывести в Redux состояние
-
   const MainStack = createStackNavigator(); // переходы мажду экранами
-  const auth = getAuth();
+  const dispatch = useDispatch();
+  const isLoggetInState = useSelector(state => state.auth.isLoggetIn);
 
-  onAuthStateChanged(auth, user => {
-    if (user) {
-      const uid = user.uid;
-      // console.log('uid :>> ', uid);
-      console.log('useroOnAuthStateChanged :>> ', user);
-      // ...
-    } else {
-      // User is signed out
-      // ...
-    }
-  }); // проверка аутентификации пользователя
+  // при входе в приложение запускает проверку логиинизации Usera
+  useEffect(() => {
+    dispatch(authStateChangeUser());
+  }, []);
+
+  console.log('isLoggetInState :>> ', isLoggetInState);
 
   const optionsHome = {
     headerShown: false,
@@ -49,20 +45,30 @@ export function Navigation() {
 
   return (
     <>
-      <MainStack.Navigator initialRouteName="LoginScreen">
-        <MainStack.Screen
-          name="Registration"
-          component={RegistrationScreen}
-          options={{ headerShown: false }} // скрывает header
-        />
+      <MainStack.Navigator initialRouteName="Registration">
+        {!isLoggetInState && (
+          <>
+            <MainStack.Screen
+              name="Registration"
+              component={RegistrationScreen}
+              options={{ headerShown: false }} // скрывает header
+            />
 
-        <MainStack.Screen
-          name="Login"
-          component={LoginScreen}
-          options={{ headerShown: false }}
-        />
+            <MainStack.Screen
+              name="Login"
+              component={LoginScreen}
+              options={{ headerShown: false }}
+            />
+          </>
+        )}
 
-        <MainStack.Screen name="Home" component={Home} options={optionsHome} />
+        {isLoggetInState && (
+          <MainStack.Screen
+            name="Home"
+            component={Home}
+            options={optionsHome}
+          />
+        )}
 
         <MainStack.Screen
           name="Comments"

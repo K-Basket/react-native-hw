@@ -7,10 +7,14 @@ import { PostsScreen } from '../Screens/PostsScreen';
 import { CreatePostsScreen } from '../Screens/CreatePostsScreen';
 import { ProfileScreen } from '../Screens/ProfileScreen';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import { authSignOutUser } from '../redux/auth/operations';
+import { useDispatch, useSelector } from 'react-redux';
+import { useEffect } from 'react';
 
 export function Home() {
   const Tabs = createBottomTabNavigator(); // нижняя навигация
   const navigation = useNavigation();
+  const dispatch = useDispatch();
 
   const optionPosts = {
     title: 'Публікації',
@@ -20,8 +24,8 @@ export function Home() {
           style={{ marginRight: 10 }}
           activeOpacity={0.3}
           onPress={() => {
-            console.log('here is log-out function');
-            navigation.navigate('Login');
+            dispatch(authSignOutUser());
+            // navigation.navigate('Login');
           }}
         >
           <Feather name="log-out" size={24} color="#BDBDBD" />

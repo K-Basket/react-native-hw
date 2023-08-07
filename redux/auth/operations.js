@@ -1,40 +1,83 @@
 import {
   createUserWithEmailAndPassword,
+  onAuthStateChanged,
   signInWithEmailAndPassword,
+  signOut,
+  updateProfile,
 } from 'firebase/auth';
 import { auth } from '../../firebase/config';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { sliceAuth } from './sliceAuth';
 // const dispatch = useDispatch();
 
-// создаем пользователя в базе firebase
+// Регистрация Usera в базе firebase
 export const authSignUpUser =
   ({ login, email, password }) =>
   async (dispatch, getState) => {
     try {
-      const { user } = await createUserWithEmailAndPassword(
-        auth,
-        login,
-        email,
-        password
+      // созлдать usera в базе Firebase
+      await createUserWithEmailAndPassword(auth, email, password);
+
+      // обновить данные usera в базе firebase
+      await updateProfile(auth.currentUser, {
+        displayName: login,
+      });
+
+      // получить данные пользователя
+      // const userCurrent = auth.currentUser;
+      const { uid, displayName } = auth.currentUser;
+
+      // отправить в Store данные пользователя
+      dispatch(
+        sliceAuth.actions.updateUserProfile({
+          userId: uid,
+          nickName: displayName,
+        })
       );
-      dispatch(sliceAuth.actions.updateUserProfile({ userId: user.uid }));
-      // console.log('user.uid :>> ', user.uid);
     } catch (error) {
       throw error.message;
     }
-  }; // Register
+  };
 
-// вход существующего пользователя
+// Login зарегистрированного Usera
 export const authSignInUser =
   ({ email, password }) =>
   async (dispatch, getState) => {
     try {
       const user = await signInWithEmailAndPassword(auth, email, password);
-      // console.log('userLogin :>> ', user);
     } catch (error) {
       throw error.message;
     }
-  }; // login
+  };
 
-export const authSignOutUser = () => async (dispatch, getState) => {}; // logout
+// Logout Usera
+export const authSignOutUser = () => async (dispatch, getState) => {
+  await signOut(auth);
+  dispatch(sliceAuth.actions.authSignOut());
+};
+
+// проверка аутентификации пользователя
+export const authStateChangeUser = () => async (dispatch, getState) => {
+  await onAuthStateChanged(auth, user => {
+    if (user) {
+      const uid = user.uid;
+      const displayName = user.displayName;
+      console.log('change :>> ', uid, displayName);
+
+      // отправить в Store данные пользователя после проверки аутентификации
+      dispatch(
+        sliceAuth.actions.updateUserProfile({
+          userId: uid,
+          nickName: displayName,
+        })
+      );
+      // добавлен флаг для использования в RegistrationScreen.js и LoginScreen.js
+      dispatch(sliceAuth.actions.authStateChange({ isLoggetIn: true }));
+    }
+  });
+};
+/*
+после перезагрузки приложения в файле navigation.js с помощью useEffect будет
+запущена функция authStateChangeUser, котораяя проверить наличие пользователя в базе Firebase
+и вернет объект данных, после мы снова диспатчим в стейт данные - это замена библиотеки persistor
+*/
