@@ -17,7 +17,7 @@ import imageBG from '../../assets/img/photo-bg.jpg';
 import avatar from '../../assets/img/avatar-1.jpg';
 import add from '../../assets/img/add.png';
 import { useDispatch } from 'react-redux';
-import { authSignUpUser } from '../../redux/auth/operations';
+import { authSignUpUser } from '../../redux/auth/operations.js';
 
 const initialState = {
   login: '',
@@ -56,6 +56,7 @@ export function RegistrationScreen() {
       return console.warn('Please fill in all fields!');
 
     // ============
+
     dispatch(authSignUpUser(dataInput));
 
     setIsShowPass(true);

@@ -1,5 +1,5 @@
 // import * as firebase from 'firebase';
-
+// const { getDefaultConfig } = require('@expo/metro-config');
 // Для роботи із firebase обовʼязково треба ініціалізувати проект
 import { initializeApp } from 'firebase/app';
 // Функція для підключення авторизації в проект
@@ -8,10 +8,10 @@ import { getAuth } from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore';
 // Функція для підключення сховища файлів в проект
 import { getStorage } from 'firebase/storage';
-const { getDefaultConfig } = require('@expo/metro-config');
 
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+// const defaultConfig = getDefaultConfig(__dirname);
+// defaultConfig.resolver.assetExts.push('cjs');
+
 const firebaseConfig = {
   apiKey: 'AIzaSyCGEyw04CSWFqi0OEUsIX2p7B95PgEEq-s',
   authDomain: 'rn-social-46962.firebaseapp.com',
@@ -29,7 +29,4 @@ export const auth = getAuth(app);
 export const db = getFirestore(app);
 export const storage = getStorage(app);
 
-const defaultConfig = getDefaultConfig(__dirname);
-defaultConfig.resolver.assetExts.push('cjs');
-
-module.exports = defaultConfig;
+// module.exports = defaultConfig;
