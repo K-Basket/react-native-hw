@@ -5,9 +5,25 @@ import { CommentsScreen } from '../Screens/CommentsScreen';
 import { MapScreen } from '../Screens/MapScreen';
 import { Home } from './Home';
 import { Button } from 'react-native';
+import { useState } from 'react';
+import { getAuth, onAuthStateChanged } from 'firebase/auth';
 
 export function Navigation() {
+  const [user, setUser] = useState(); // вывести в Redux состояние
+
   const MainStack = createStackNavigator(); // переходы мажду экранами
+  const auth = getAuth();
+
+  onAuthStateChanged(auth, user => {
+    if (user) {
+      const uid = user.uid;
+      console.log('uid :>> ', uid);
+      // ...
+    } else {
+      // User is signed out
+      // ...
+    }
+  }); // проверка аутентификации пользователя
 
   const optionsHome = {
     headerShown: false,

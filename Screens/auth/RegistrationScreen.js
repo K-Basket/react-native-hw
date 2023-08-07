@@ -109,7 +109,7 @@ export function RegistrationScreen() {
                   placeholder="Логін"
                   onFocus={onShowKeyboard}
                   onBlur={() => {
-                    console.log('onBlur');
+                    // console.log('onBlur');
                   }}
                   value={dataInput.login} // передаем данные из state
                   onChangeText={value =>
