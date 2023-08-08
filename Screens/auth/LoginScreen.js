@@ -49,24 +49,6 @@ export function LoginScreen() {
     setIsShowKeyboard(true);
   }
 
-  // ======================= Эту проверку сделать в Navigation.js, а сюда передать чз  Redux
-
-  // const auth = getAuth();
-
-  // onAuthStateChanged(auth, user => {
-  //   if (user) {
-  //     const uid = user.uid;
-  //     setUser(true);
-  //     // ...
-  //   } else {
-  //     // User is signed out
-  //     // ...
-  //     setUser(false);
-  //   }
-  // }); // проверка аутентификации пользователя
-
-  // =======================
-
   function onSubmit() {
     if (!dataInput.email || !dataInput.password)
       return console.warn('Please fill in all fields!');
@@ -75,8 +57,6 @@ export function LoginScreen() {
 
     setIsShowPass(true);
     setDataInput(initialState);
-
-    // if (user) navigation.navigate('Home');
   }
 
   function onLogin() {

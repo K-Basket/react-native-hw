@@ -47,13 +47,6 @@ export function RegistrationScreen() {
     };
   }, []);
 
-  // взять данные из Store Redux
-  const storeUseeId = useSelector(state => state.auth.userId);
-  const storeNickname = useSelector(state => state.auth.nickName);
-  // const isLoggetInState = useSelector(state => state.auth.isLoggetIn);
-
-  // console.log('stateregistration :>> ', isLoggetInState, storeNickname);
-
   function onShowKeyboard() {
     setIsShowKeyboard(true);
   }
@@ -69,8 +62,6 @@ export function RegistrationScreen() {
     setDataInput(initialState);
 
     console.log('dataInput :>> ', dataInput);
-
-    // if (isLoggetInState) navigation.navigate('Home'); // если auth тогда переходим на Home
   }
 
   function onLogin() {
@@ -263,8 +254,6 @@ const styles = StyleSheet.create({
   },
   linkTitle: {
     paddingTop: 16,
-    // alignSelf: 'flex-start', // вносит изменения, заданные родителькими
-
     fontFamily: 'Roboto-400',
     fontSize: 16,
     textAlign: 'center',
