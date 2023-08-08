@@ -8,8 +8,7 @@ import { CreatePostsScreen } from '../Screens/CreatePostsScreen';
 import { ProfileScreen } from '../Screens/ProfileScreen';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { authSignOutUser } from '../redux/auth/operations';
-import { useDispatch, useSelector } from 'react-redux';
-import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 
 export function Home() {
   const Tabs = createBottomTabNavigator(); // нижняя навигация

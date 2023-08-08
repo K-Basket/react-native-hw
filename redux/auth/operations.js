@@ -6,8 +6,7 @@ import {
   updateProfile,
 } from 'firebase/auth';
 import { auth } from '../../firebase/config';
-import { useDispatch, useSelector } from 'react-redux';
-import { sliceAuth } from './sliceAuth';
+import { authSignOut, authStateChange, updateUserProfile } from './sliceAuth';
 // const dispatch = useDispatch();
 
 // Регистрация Usera в базе firebase
@@ -29,7 +28,7 @@ export const authSignUpUser =
 
       // отправить в Store данные пользователя
       dispatch(
-        sliceAuth.actions.updateUserProfile({
+        updateUserProfile({
           userId: uid,
           nickName: displayName,
         })
@@ -53,7 +52,7 @@ export const authSignInUser =
 // Logout Usera
 export const authSignOutUser = () => async (dispatch, getState) => {
   await signOut(auth);
-  dispatch(sliceAuth.actions.authSignOut());
+  dispatch(authSignOut());
 };
 
 // проверка аутентификации пользователя
@@ -62,17 +61,16 @@ export const authStateChangeUser = () => async (dispatch, getState) => {
     if (user) {
       const uid = user.uid;
       const displayName = user.displayName;
-      console.log('change :>> ', uid, displayName);
 
       // отправить в Store данные пользователя после проверки аутентификации
       dispatch(
-        sliceAuth.actions.updateUserProfile({
+        updateUserProfile({
           userId: uid,
           nickName: displayName,
         })
       );
       // добавлен флаг для использования в RegistrationScreen.js и LoginScreen.js
-      dispatch(sliceAuth.actions.authStateChange({ isLoggetIn: true }));
+      dispatch(authStateChange({ isLoggetIn: true }));
     }
   });
 };

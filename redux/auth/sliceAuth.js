@@ -22,3 +22,6 @@ export const sliceAuth = createSlice({
     authSignOut: () => state,
   },
 });
+
+export const { updateUserProfile, authStateChange, authSignOut } =
+  sliceAuth.actions;

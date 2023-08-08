@@ -5,8 +5,7 @@ import { CommentsScreen } from '../Screens/CommentsScreen';
 import { MapScreen } from '../Screens/MapScreen';
 import { Home } from './Home';
 import { Button } from 'react-native';
-import { useEffect, useState } from 'react';
-import { getAuth, onAuthStateChanged } from 'firebase/auth';
+import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { authStateChangeUser } from '../redux/auth/operations';
 
@@ -15,12 +14,13 @@ export function Navigation() {
   const dispatch = useDispatch();
   const isLoggetInState = useSelector(state => state.auth.isLoggetIn);
 
+  // const userId = useSelector(state => state.auth.userId);
+  // const nickName = useSelector(state => state.auth.nickName);
+
   // при входе в приложение запускает проверку логиинизации Usera
   useEffect(() => {
     dispatch(authStateChangeUser());
   }, []);
-
-  console.log('isLoggetInState :>> ', isLoggetInState);
 
   const optionsHome = {
     headerShown: false,
