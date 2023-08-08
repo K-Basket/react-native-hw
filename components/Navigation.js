@@ -45,7 +45,7 @@ export function Navigation() {
 
   return (
     <>
-      <MainStack.Navigator initialRouteName="Registration">
+      <MainStack.Navigator initialRouteName="Login">
         {!isLoggetInState && (
           <>
             <MainStack.Screen

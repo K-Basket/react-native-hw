@@ -61,7 +61,7 @@ export function RegistrationScreen() {
     setIsShowPass(true);
     setDataInput(initialState);
 
-    console.log('dataInput :>> ', dataInput);
+    // console.log('dataInput :>> ', dataInput);
   }
 
   function onLogin() {

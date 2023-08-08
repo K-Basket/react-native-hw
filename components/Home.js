@@ -61,7 +61,7 @@ export function Home() {
           style={{ marginLeft: 10 }}
           activeOpacity={0.3}
           onPress={() => {
-            console.log('here is log-out function');
+            console.log('bask to the Posts');
             navigation.navigate('Posts');
           }}
         >
