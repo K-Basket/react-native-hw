@@ -8,11 +8,12 @@ import { Button } from 'react-native';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { authStateChangeUser } from '../redux/auth/operations';
+import { isLoggetInSelector } from '../redux/auth/selectors';
 
 export function Navigation() {
   const MainStack = createStackNavigator(); // переходы мажду экранами
   const dispatch = useDispatch();
-  const isLoggetInState = useSelector(state => state.auth.isLoggetIn);
+  const isLoggetIn = useSelector(isLoggetInSelector);
 
   // const userId = useSelector(state => state.auth.userId);
   // const nickName = useSelector(state => state.auth.nickName);
@@ -46,7 +47,7 @@ export function Navigation() {
   return (
     <>
       <MainStack.Navigator initialRouteName="Login">
-        {!isLoggetInState && (
+        {!isLoggetIn && (
           <>
             <MainStack.Screen
               name="Registration"
@@ -62,7 +63,7 @@ export function Navigation() {
           </>
         )}
 
-        {isLoggetInState && (
+        {isLoggetIn && (
           <MainStack.Screen
             name="Home"
             component={Home}

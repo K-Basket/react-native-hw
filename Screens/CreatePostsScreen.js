@@ -13,16 +13,22 @@ import { Camera, CameraType } from 'expo-camera';
 import { useEffect, useState } from 'react';
 import * as MediaLibrary from 'expo-media-library';
 import * as Location from 'expo-location';
+import { db } from '../firebase/config';
+import { addDoc, collection } from 'firebase/firestore';
+import { nickNameSelector } from '../redux/auth/selectors';
+import { useSelector } from 'react-redux';
 
 export function CreatePostsScreen() {
   const [hasPermission, setHasPermission] = useState(null);
   const [cameraRef, setCameraRef] = useState(null); // снимок c камеры
-  const [photo, setPhoto] = useState(null);
+  const [photo, setPhoto] = useState(null); // фото из библиотеки фоток телефона
   const [type, setType] = useState(CameraType.back);
   const [inputTitlePhoto, setInputTitlePhoto] = useState('');
   const [inputLocation, setInputLocation] = useState('');
   const [location, setLocation] = useState(null);
   const [address, setAddress] = useState(null);
+
+  const nickName = useSelector(nickNameSelector);
 
   const navigation = useNavigation();
 
@@ -58,10 +64,10 @@ export function CreatePostsScreen() {
   async function takePhoto() {
     if (cameraRef) {
       const { uri } = await cameraRef.takePictureAsync(); // uri - ссылка на снимок
-      const photoLib = await MediaLibrary.createAssetAsync(uri); // сохранение снимка в библиотеку телефона
+      const photoLib = await MediaLibrary.createAssetAsync(uri); // сохраняет снимок в библиотеку телефона
       setPhoto(photoLib);
 
-      const location = await Location.getCurrentPositionAsync({}); // локация сделанной фотки
+      const location = await Location.getCurrentPositionAsync({}); // возвращает локацию сделанной фотки
       const coords = {
         latitude: location.coords.latitude,
         longitude: location.coords.longitude,
@@ -83,16 +89,39 @@ export function CreatePostsScreen() {
       return;
     }
 
-    navigation.navigate('Posts', {
-      location,
-      photo,
-      inputTitlePhoto,
-      inputLocation,
-      address,
-    }); // передача данных на страцу Posts
+    navigation.navigate('Posts'); // передача данных на страцу Posts
+
+    // navigation.navigate('Posts', {
+    //   location,
+    //   photo,
+    //   inputTitlePhoto,
+    //   inputLocation,
+    //   address,
+    // }); // передача данных на страцу Posts
+
+    uploadDataToServer(); // загружает данные на сервер
+
     setInputTitlePhoto('');
     setInputLocation('');
     setPhoto(null);
+  }
+
+  async function uploadDataToServer() {
+    try {
+      // const response = await fetch(photo); // ждет получения фото в state
+      // const file = await response.blob(); // переводит фотографию в нужный формат для firebase
+
+      const docRef = await addDoc(collection(db, nickName), {
+        photo,
+        inputTitlePhoto,
+        inputLocation,
+        location,
+        address,
+      });
+      console.log('Document written with ID: ', docRef.id);
+    } catch (error) {
+      console.warn(error);
+    }
   }
 
   return (

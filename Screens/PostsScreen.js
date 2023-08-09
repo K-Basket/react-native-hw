@@ -10,17 +10,77 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import avatar from '../assets/img/avatar-1.jpg';
+import { collection, getDocs } from 'firebase/firestore';
+import { db } from '../firebase/config';
+import { useSelector } from 'react-redux';
+import { nickNameSelector } from '../redux/auth/selectors';
 
 export function PostsScreen() {
-  const [posts, setPosts] = useState([]);
+  const [posts, setPosts] = useState(null);
   const navigation = useNavigation();
-  const { params } = useRoute(); // принимаем данные из др Screens
+  // const { params } = useRoute(); // принимаем данные из др Screens !!!!! заменено данными из базы firebase
+  const nickName = useSelector(nickNameSelector);
+
+  // const getAllPostsFromServer = async () => {
+  //   const snapshot = await getDocs(collection(db, nickName));
+
+  //   setPosts(snapshot.forEach(doc => ({ ...doc.data(), id: doc.id })));
+  // };
+
+  const getAllPostsFromServer = async () => {
+    try {
+      // получает данные с сервера
+      const querySnapshot = await getDocs(collection(db, nickName));
+
+      setPosts(() => {
+        let array = [];
+        // записывает в переменную array данные с сервера
+        querySnapshot.forEach(doc => {
+          array.push({ id: doc.id, ...doc.data() });
+        });
+        return array;
+      });
+
+      // console.log('posts :>> ', posts);
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  };
+  // const getAllPostsFromServer = async () => {
+  //   try {
+  //     const querySnapshot = await getDocs(collection(db, nickName));
+
+  //     let array = [];
+
+  //     querySnapshot.forEach(doc => {
+  //       // console.log(doc.id, ' => ', doc.data());
+  //       // console.log(doc.data());
+  //       array.push(doc.data());
+  //     });
+  //     setPosts(array);
+
+  //     console.log('array :>> ', array);
+  //   } catch (error) {
+  //     console.log(error);
+  //     throw error;
+  //   }
+  // };
+
+  // useEffect(() => {
+  //   if (params) {
+  //     setPosts(prev => [...prev, params]);
+  //     console.log('posts :>> ', posts);
+  //   }
+  // }, [params]); // !!!!! заменено данными из базы firebase
 
   useEffect(() => {
-    if (params) {
-      setPosts(prev => [...prev, params]);
-    }
-  }, [params]);
+    // if (!posts) {
+    // }
+    getAllPostsFromServer();
+
+    console.log('posts-Effect :>> ', posts);
+  }, []);
 
   return (
     <View style={styles.container}>
