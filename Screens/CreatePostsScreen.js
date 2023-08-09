@@ -89,7 +89,7 @@ export function CreatePostsScreen() {
       return;
     }
 
-    navigation.navigate('Posts'); // передача данных на страцу Posts
+    // navigation.navigate('Posts'); // передача данных на страцу Posts
 
     // navigation.navigate('Posts', {
     //   location,
@@ -100,6 +100,8 @@ export function CreatePostsScreen() {
     // }); // передача данных на страцу Posts
 
     uploadDataToServer(); // загружает данные на сервер
+
+    navigation.navigate('Posts', {}); // пустой объект для update postScreen
 
     setInputTitlePhoto('');
     setInputLocation('');
@@ -118,7 +120,7 @@ export function CreatePostsScreen() {
         location,
         address,
       });
-      console.log('Document written with ID: ', docRef.id);
+      // console.log('Document written with ID: ', docRef.id);
     } catch (error) {
       console.warn(error);
     }
