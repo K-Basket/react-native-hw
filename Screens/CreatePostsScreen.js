@@ -15,7 +15,7 @@ import * as MediaLibrary from 'expo-media-library';
 import * as Location from 'expo-location';
 import { db } from '../firebase/config';
 import { addDoc, collection } from 'firebase/firestore';
-import { nickNameSelector } from '../redux/auth/selectors';
+import { nickNameSelector, userIdSelector } from '../redux/auth/selectors';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateCollectionId } from '../redux/auth/sliceAuth';
 
@@ -30,6 +30,7 @@ export function CreatePostsScreen() {
   const [address, setAddress] = useState(null);
 
   const nickName = useSelector(nickNameSelector);
+  const userId = useSelector(userIdSelector);
 
   const navigation = useNavigation();
   const dispatch = useDispatch();
@@ -107,6 +108,8 @@ export function CreatePostsScreen() {
         inputLocation,
         location,
         address,
+        nickName,
+        userId,
       });
 
       // docRef.id -- это id поста
