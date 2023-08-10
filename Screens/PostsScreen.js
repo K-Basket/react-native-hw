@@ -13,19 +13,22 @@ import avatar from '../assets/img/avatar-1.jpg';
 import { collection, getDocs } from 'firebase/firestore';
 import { db } from '../firebase/config';
 import { useSelector } from 'react-redux';
-import { nickNameSelector } from '../redux/auth/selectors';
+import { nickNameSelector, userIdSelector } from '../redux/auth/selectors';
 
 export function PostsScreen() {
   const [posts, setPosts] = useState(null);
   const navigation = useNavigation();
   const { params } = useRoute(); // принимаем данные из др Screens
   const nickName = useSelector(nickNameSelector);
+  const userId = useSelector(userIdSelector);
 
   const getAllPostsFromServer = async () => {
     try {
       // получает данные с сервера
       // const querySnapshot = await getDocs(collection(db, 'Outlander'));
+
       const querySnapshot = await getDocs(collection(db, nickName));
+      console.log('db :>> ', db);
 
       return setPosts(() => {
         let array = [];
@@ -33,7 +36,7 @@ export function PostsScreen() {
         querySnapshot.forEach(doc => {
           array.push({ id: doc.id, ...doc.data() });
         });
-        // console.log('array :>> ', array);
+
         return array;
       });
     } catch (error) {
