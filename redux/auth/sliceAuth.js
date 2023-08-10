@@ -4,6 +4,7 @@ const state = {
   userId: null,
   nickName: null,
   isLoggetIn: false,
+  collectionId: null,
 };
 
 export const sliceAuth = createSlice({
@@ -20,8 +21,15 @@ export const sliceAuth = createSlice({
       isLoggetIn: action.payload.isLoggetIn,
     }),
     authSignOut: () => state,
+    updateCollectionId: (state, action) => {
+      state.collectionId = action.payload;
+    },
   },
 });
 
-export const { updateUserProfile, authStateChange, authSignOut } =
-  sliceAuth.actions;
+export const {
+  updateUserProfile,
+  authStateChange,
+  authSignOut,
+  updateCollectionId,
+} = sliceAuth.actions;

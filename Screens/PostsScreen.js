@@ -1,4 +1,4 @@
-import { useNavigation, useRoute } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import { Feather } from '@expo/vector-icons';
 import { useEffect, useState } from 'react';
 import {
@@ -13,31 +13,31 @@ import avatar from '../assets/img/avatar-1.jpg';
 import { collection, getDocs } from 'firebase/firestore';
 import { db } from '../firebase/config';
 import { useSelector } from 'react-redux';
-import { nickNameSelector, userIdSelector } from '../redux/auth/selectors';
+import {
+  collectionIdSelector,
+  nickNameSelector,
+} from '../redux/auth/selectors';
 
 export function PostsScreen() {
   const [posts, setPosts] = useState(null);
-  const navigation = useNavigation();
-  const { params } = useRoute(); // принимаем данные из др Screens
   const nickName = useSelector(nickNameSelector);
-  const userId = useSelector(userIdSelector);
+  const collectionId = useSelector(collectionIdSelector);
+
+  const navigation = useNavigation();
 
   const getAllPostsFromServer = async () => {
     try {
       // получает данные с сервера
-      // const querySnapshot = await getDocs(collection(db, 'Outlander'));
-
       const querySnapshot = await getDocs(collection(db, nickName));
-      console.log('db :>> ', db);
 
       return setPosts(() => {
-        let array = [];
-        // записывает в переменную array данные с сервера
+        let data = [];
+        // записывает в переменную data данные с сервера
         querySnapshot.forEach(doc => {
-          array.push({ id: doc.id, ...doc.data() });
+          data.push({ id: doc.id, ...doc.data() });
         });
 
-        return array;
+        return data;
       });
     } catch (error) {
       console.log(error);
@@ -46,8 +46,8 @@ export function PostsScreen() {
   };
 
   useEffect(() => {
-    getAllPostsFromServer();
-  }, [params]);
+    if (collectionId) getAllPostsFromServer();
+  }, [collectionId]);
 
   return (
     <View style={styles.container}>

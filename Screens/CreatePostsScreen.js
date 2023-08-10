@@ -16,7 +16,8 @@ import * as Location from 'expo-location';
 import { db } from '../firebase/config';
 import { addDoc, collection } from 'firebase/firestore';
 import { nickNameSelector } from '../redux/auth/selectors';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { updateCollectionId } from '../redux/auth/sliceAuth';
 
 export function CreatePostsScreen() {
   const [hasPermission, setHasPermission] = useState(null);
@@ -27,11 +28,11 @@ export function CreatePostsScreen() {
   const [inputLocation, setInputLocation] = useState('');
   const [location, setLocation] = useState(null);
   const [address, setAddress] = useState(null);
-  const [comments, setComments] = useState('');
 
   const nickName = useSelector(nickNameSelector);
 
   const navigation = useNavigation();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     // запрос на разрешение использовать камеру и сохранять в девайс фотки
@@ -90,30 +91,16 @@ export function CreatePostsScreen() {
       return;
     }
 
-    // navigation.navigate('Posts'); // передача данных на страцу Posts
-
-    // navigation.navigate('Posts', {
-    //   location,
-    //   photo,
-    //   inputTitlePhoto,
-    //   inputLocation,
-    //   address,
-    // }); // передача данных на страцу Posts
-
     uploadDataToServer(); // загружает данные на сервер
-
-    navigation.navigate('Posts', {}); // пустой объект для использования в useEffect() postScreen
-
+    navigation.navigate('Posts');
     setInputTitlePhoto('');
     setInputLocation('');
     setPhoto(null);
   }
 
+  // загружает в базу данных post
   async function uploadDataToServer() {
     try {
-      // const response = await fetch(photo); // ждет получения фото в state
-      // const file = await response.blob(); // переводит фотографию в нужный формат для firebase
-
       const docRef = await addDoc(collection(db, nickName), {
         photo,
         inputTitlePhoto,
@@ -122,7 +109,8 @@ export function CreatePostsScreen() {
         address,
       });
 
-      console.log('User ID: ', docRef.id); // id пользователя
+      // docRef.id -- это id поста
+      dispatch(updateCollectionId(docRef.id));
     } catch (error) {
       console.warn(error);
     }
