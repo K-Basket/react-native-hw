@@ -27,6 +27,7 @@ export function CreatePostsScreen() {
   const [inputLocation, setInputLocation] = useState('');
   const [location, setLocation] = useState(null);
   const [address, setAddress] = useState(null);
+  const [comments, setComments] = useState('');
 
   const nickName = useSelector(nickNameSelector);
 
@@ -101,7 +102,7 @@ export function CreatePostsScreen() {
 
     uploadDataToServer(); // загружает данные на сервер
 
-    navigation.navigate('Posts', {}); // пустой объект для update postScreen
+    navigation.navigate('Posts', {}); // пустой объект для использования в useEffect() postScreen
 
     setInputTitlePhoto('');
     setInputLocation('');
@@ -120,7 +121,8 @@ export function CreatePostsScreen() {
         location,
         address,
       });
-      // console.log('Document written with ID: ', docRef.id);
+
+      console.log('User ID: ', docRef.id); // id пользователя
     } catch (error) {
       console.warn(error);
     }

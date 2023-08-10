@@ -32,7 +32,7 @@ export function PostsScreen() {
         querySnapshot.forEach(doc => {
           array.push({ id: doc.id, ...doc.data() });
         });
-        console.log('array :>> ', array);
+        // console.log('array :>> ', array);
         return array;
       });
     } catch (error) {
@@ -128,7 +128,7 @@ export function PostsScreen() {
                     // style={styles.btnCamera}
                     activeOpacity={0.8}
                     onPress={() => {
-                      navigation.navigate('Comments');
+                      navigation.navigate('Comments', { postId: item.id }); // передает id поста в CommentScreen
                     }}
                   >
                     <Feather name="message-circle" size={24} color="#BDBDBD" />
@@ -155,7 +155,7 @@ export function PostsScreen() {
                     }}
                     activeOpacity={0.8}
                     onPress={() => {
-                      navigation.navigate('Map', { location: params.location });
+                      navigation.navigate('Map', { location: item.location });
                     }}
                   >
                     <View>
