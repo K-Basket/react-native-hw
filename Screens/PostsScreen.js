@@ -48,8 +48,8 @@ export function PostsScreen() {
   };
 
   useEffect(() => {
-    if (collectionId) getAllPostsFromServer();
-  }, [collectionId]);
+    if (collectionId || email) getAllPostsFromServer();
+  }, [collectionId, email]);
 
   return (
     <View style={styles.container}>
@@ -87,6 +87,7 @@ export function PostsScreen() {
       <FlatList
         data={posts}
         keyExtractor={(item, indx) => indx.toString()}
+        // keyExtractor={item => item.id}
         renderItem={({ item }) => (
           <View>
             <View style={styles.wrapImage}>
