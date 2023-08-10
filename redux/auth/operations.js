@@ -31,6 +31,7 @@ export const authSignUpUser =
         updateUserProfile({
           userId: uid,
           nickName: displayName,
+          email,
         })
       );
     } catch (error) {
@@ -61,12 +62,14 @@ export const authStateChangeUser = () => async (dispatch, getState) => {
     if (user) {
       const uid = user.uid;
       const displayName = user.displayName;
+      const email = user.email;
 
       // отправить в Store данные пользователя после проверки аутентификации
       dispatch(
         updateUserProfile({
           userId: uid,
           nickName: displayName,
+          email: email,
         })
       );
       // добавлен флаг для использования в RegistrationScreen.js и LoginScreen.js
@@ -76,6 +79,6 @@ export const authStateChangeUser = () => async (dispatch, getState) => {
 };
 /*
 после перезагрузки приложения в файле navigation.js с помощью useEffect будет
-запущена функция authStateChangeUser, котораяя проверить наличие пользователя в базе Firebase
+запущена функция authStateChangeUser, котораяя проверит наличие пользователя в базе Firebase
 и вернет объект данных, после мы снова диспатчим в стейт данные - это замена библиотеки persistor
 */

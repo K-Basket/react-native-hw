@@ -15,12 +15,14 @@ import { db } from '../firebase/config';
 import { useSelector } from 'react-redux';
 import {
   collectionIdSelector,
+  emailSelector,
   nickNameSelector,
 } from '../redux/auth/selectors';
 
 export function PostsScreen() {
   const [posts, setPosts] = useState(null);
   const nickName = useSelector(nickNameSelector);
+  const email = useSelector(emailSelector);
   const collectionId = useSelector(collectionIdSelector);
 
   const navigation = useNavigation();
@@ -68,7 +70,7 @@ export function PostsScreen() {
           <Text
             style={{ fontFamily: 'Roboto-700', fontSize: 13, color: '#212121' }}
           >
-            Natali Romanova
+            {nickName}
           </Text>
           <Text
             style={{
@@ -77,7 +79,7 @@ export function PostsScreen() {
               color: 'rgba(33, 33, 33, 0.80)',
             }}
           >
-            email@example.com
+            {email}
           </Text>
         </View>
       </View>
