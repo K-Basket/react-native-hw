@@ -33,6 +33,10 @@ export const authSignUpUser =
           nickName: displayName,
         })
       );
+
+      // // create DB
+      // const docRef = await addDoc(collection(db, login), {});
+      // console.log('docRef.id :>> ', docRef.id);
     } catch (error) {
       throw error.message;
     }

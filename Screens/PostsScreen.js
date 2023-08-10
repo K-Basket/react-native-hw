@@ -18,12 +18,13 @@ import { nickNameSelector } from '../redux/auth/selectors';
 export function PostsScreen() {
   const [posts, setPosts] = useState(null);
   const navigation = useNavigation();
-  const { params } = useRoute(); // принимаем данные из др Screens !!!!! заменено данными из базы firebase
+  const { params } = useRoute(); // принимаем данные из др Screens
   const nickName = useSelector(nickNameSelector);
 
   const getAllPostsFromServer = async () => {
     try {
       // получает данные с сервера
+      // const querySnapshot = await getDocs(collection(db, 'Outlander'));
       const querySnapshot = await getDocs(collection(db, nickName));
 
       return setPosts(() => {
