@@ -10,7 +10,12 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import avatar from '../assets/img/avatar-1.jpg';
-import { collection, getDocs, onSnapshot } from 'firebase/firestore';
+import {
+  collection,
+  getCountFromServer,
+  getDocs,
+  onSnapshot,
+} from 'firebase/firestore';
 import { db } from '../firebase/config';
 import { useSelector } from 'react-redux';
 import {
@@ -26,6 +31,10 @@ export function PostsScreen() {
   const collectionId = useSelector(collectionIdSelector);
 
   const navigation = useNavigation();
+
+  useEffect(() => {
+    if (collectionId || email) getAllPostsFromServer();
+  }, [collectionId, email]);
 
   const getAllPostsFromServer = async () => {
     try {
@@ -48,9 +57,7 @@ export function PostsScreen() {
     }
   };
 
-  useEffect(() => {
-    if (collectionId || email) getAllPostsFromServer();
-  }, [collectionId, email]);
+  // console.log('PostsScreen / posts :>> ', posts);
 
   return (
     <View style={styles.container}>
@@ -87,8 +94,8 @@ export function PostsScreen() {
 
       <FlatList
         data={posts}
-        keyExtractor={(item, indx) => indx.toString()}
-        // keyExtractor={item => item.id}
+        // keyExtractor={(item, indx) => indx.toString()}
+        keyExtractor={item => item.id}
         renderItem={({ item }) => (
           <View>
             <View style={styles.wrapImage}>
@@ -136,7 +143,10 @@ export function PostsScreen() {
                     // style={styles.btnCamera}
                     activeOpacity={0.8}
                     onPress={() => {
-                      navigation.navigate('Comments', { postId: item.id }); // передает id поста в CommentScreen
+                      navigation.navigate('Comments', {
+                        postId: item.id,
+                        photo: item.photo,
+                      }); // передает данные поста в CommentScreen
                     }}
                   >
                     <Feather name="message-circle" size={24} color="#BDBDBD" />
@@ -149,7 +159,7 @@ export function PostsScreen() {
                       fontSize: 16,
                     }}
                   >
-                    0
+                    {item.countComment ? item.countComment : 0}
                   </Text>
                 </View>
 

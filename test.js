@@ -157,3 +157,12 @@ export const xxx = [
 ];
 
 // console.log('object :>> ', xxx);
+
+// // ================================================
+
+// const coll = collection(db, `photoPosts/${item.id}/Comments`);
+// const snapshot = await getCountFromServer(coll);
+// const count = snapshot.data().count;
+// console.log('count: ', count);
+
+// // ================================================

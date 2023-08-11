@@ -2,6 +2,7 @@ import { useRoute } from '@react-navigation/native';
 import { useEffect, useState } from 'react';
 import {
   FlatList,
+  Image,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -10,7 +11,14 @@ import {
 import { TextInput } from 'react-native-gesture-handler';
 import { useSelector } from 'react-redux';
 import { nickNameSelector } from '../redux/auth/selectors';
-import { addDoc, collection, doc, getDocs } from 'firebase/firestore';
+import {
+  addDoc,
+  collection,
+  doc,
+  getCountFromServer,
+  getDocs,
+  updateDoc,
+} from 'firebase/firestore';
 import { db } from '../firebase/config';
 
 export function CommentsScreen() {
@@ -19,7 +27,7 @@ export function CommentsScreen() {
   const [allComments, setAllComments] = useState([]);
   const nickName = useSelector(nickNameSelector);
 
-  const { postId } = useRoute().params; // принимаем данные из postsScreen для запииси в базу данных
+  const { postId, photo } = useRoute().params; // принимаем данные из postsScreen для запииси в базу данных
   // console.log('postId :>> ', postId);
 
   useEffect(() => {
@@ -47,10 +55,16 @@ export function CommentsScreen() {
 
   const getAllCommentsFromServer = async () => {
     try {
+      // получает количество коментариев
+      const coll = collection(db, `photoPosts/${postId}/Comments`);
+      const snapshot = await getCountFromServer(coll);
+      const count = snapshot.data().count;
+
       // получает данные с сервера
       const ref = doc(db, 'photoPosts', postId);
       // const ref = doc(db, nickName, postId);
       const querySnapshot = await getDocs(collection(ref, 'Comments'));
+      await updateDoc(ref, { countComment: count });
 
       return setAllComments(() => {
         let data = [];
@@ -66,11 +80,26 @@ export function CommentsScreen() {
     }
   };
 
+  // console.log('allComments :>> ', allComments.length);
+
   return (
     <View style={styles.container}>
+      <View>
+        <Image
+          source={photo}
+          style={{
+            marginTop: 10,
+            width: 400,
+            height: 240,
+            borderColor: 'green',
+            borderWidth: 1,
+            borderRadius: 8,
+          }}
+        />
+      </View>
+
       <FlatList
         data={allComments}
-        // keyExtractor={(item, indx) => indx.toString()}
         keyExtractor={item => item.id}
         renderItem={({ item }) => (
           <View>
