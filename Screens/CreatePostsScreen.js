@@ -102,7 +102,7 @@ export function CreatePostsScreen() {
   // загружает в базу данных post
   async function uploadDataToServer() {
     try {
-      const docRef = await addDoc(collection(db, nickName), {
+      const docRef = await addDoc(collection(db, 'photoPosts'), {
         photo,
         inputTitlePhoto,
         inputLocation,
@@ -118,6 +118,26 @@ export function CreatePostsScreen() {
       console.warn(error);
     }
   }
+
+  // ========================================== создает для каждого пользователя коллекцию в DB
+  // async function uploadDataToServer() {
+  //   try {
+  //     const docRef = await addDoc(collection(db, nickName), {
+  //       photo,
+  //       inputTitlePhoto,
+  //       inputLocation,
+  //       location,
+  //       address,
+  //       nickName,
+  //       userId,
+  //     });
+
+  //     // docRef.id -- это id поста
+  //     dispatch(updateCollectionId(docRef.id));
+  //   } catch (error) {
+  //     console.warn(error);
+  //   }
+  // }
 
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>

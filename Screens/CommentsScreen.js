@@ -34,7 +34,8 @@ export function CommentsScreen() {
 
   const createCommentsPost = async () => {
     try {
-      const ref = doc(db, nickName, postId);
+      const ref = doc(db, 'photoPosts', postId);
+      // const ref = doc(db, nickName, postId);
 
       const docRef = await addDoc(collection(ref, 'Comments'), {
         nickName,
@@ -53,7 +54,8 @@ export function CommentsScreen() {
   const getAllCommentsFromServer = async () => {
     try {
       // получает данные с сервера
-      const ref = doc(db, nickName, postId);
+      const ref = doc(db, 'photoPosts', postId);
+      // const ref = doc(db, nickName, postId);
       const querySnapshot = await getDocs(collection(ref, 'Comments'));
 
       return setAllComments(() => {

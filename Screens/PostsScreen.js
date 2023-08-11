@@ -30,7 +30,8 @@ export function PostsScreen() {
   const getAllPostsFromServer = async () => {
     try {
       // получает данные с сервера
-      const querySnapshot = await getDocs(collection(db, nickName));
+      const querySnapshot = await getDocs(collection(db, 'photoPosts'));
+      // const querySnapshot = await getDocs(collection(db, nickName));
 
       return setPosts(() => {
         let data = [];
@@ -46,6 +47,10 @@ export function PostsScreen() {
       throw error;
     }
   };
+
+  // useEffect(() => {
+  //   getAllPostsFromServer();
+  // }, []);
 
   useEffect(() => {
     if (collectionId || email) getAllPostsFromServer();
