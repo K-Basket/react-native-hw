@@ -10,12 +10,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import avatar from '../assets/img/avatar-1.jpg';
-import {
-  collection,
-  getCountFromServer,
-  getDocs,
-  onSnapshot,
-} from 'firebase/firestore';
+import { collection, onSnapshot } from 'firebase/firestore';
 import { db } from '../firebase/config';
 import { useSelector } from 'react-redux';
 import {
@@ -33,23 +28,29 @@ export function PostsScreen() {
   const navigation = useNavigation();
 
   useEffect(() => {
-    if (collectionId || email) getAllPostsFromServer();
-  }, [collectionId, email]);
+    getAllPostsFromServer();
+  }, []);
+
+  // useEffect(() => {
+  //   if (collectionId || email) getAllPostsFromServer();
+  // }, [collectionId, email]);
+
+  // =================================================================================
 
   const getAllPostsFromServer = async () => {
     try {
-      // получает данные с сервера
-      const querySnapshot = await getDocs(collection(db, 'photoPosts'));
-      // const querySnapshot = await getDocs(collection(db, nickName));
+      const query = collection(db, 'photoPosts');
+      // const querySnapshot = await getDocs(query);
 
-      return setPosts(() => {
+      onSnapshot(query, querySnapshot => {
+        // getDocs(query);
         let data = [];
-        // записывает в переменную data данные с сервера
+
         querySnapshot.forEach(doc => {
           data.push({ id: doc.id, ...doc.data() });
-        });
+        }); // записывает в переменную data данные с сервера
 
-        return data;
+        setPosts(data);
       });
     } catch (error) {
       console.log(error);
@@ -57,7 +58,32 @@ export function PostsScreen() {
     }
   };
 
-  // console.log('PostsScreen / posts :>> ', posts);
+  // =================================================================================
+
+  // const getAllPostsFromServer = async () => {
+  //   try {
+  //     // получает данные с сервера
+  //     const querySnapshot = await getDocs(collection(db, 'photoPosts'));
+  //     // const querySnapshot = await getDocs(collection(db, nickName));
+
+  //     return setPosts(() => {
+  //       let data = [];
+  //       // записывает в переменную data данные с сервера
+  //       querySnapshot.forEach(doc => {
+  //         data.push({ id: doc.id, ...doc.data() });
+  //       });
+
+  //       return data;
+  //     });
+  //   } catch (error) {
+  //     console.log(error);
+  //     throw error;
+  //   }
+  // };
+
+  // // console.log('PostsScreen / posts :>> ', posts);
+
+  // =================================================================================
 
   return (
     <View style={styles.container}>
