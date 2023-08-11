@@ -10,7 +10,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import avatar from '../assets/img/avatar-1.jpg';
-import { collection, getDocs } from 'firebase/firestore';
+import { collection, getDocs, onSnapshot } from 'firebase/firestore';
 import { db } from '../firebase/config';
 import { useSelector } from 'react-redux';
 import {
@@ -47,10 +47,6 @@ export function PostsScreen() {
       throw error;
     }
   };
-
-  // useEffect(() => {
-  //   getAllPostsFromServer();
-  // }, []);
 
   useEffect(() => {
     if (collectionId || email) getAllPostsFromServer();

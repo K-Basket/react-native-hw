@@ -10,13 +10,7 @@ import {
 import { TextInput } from 'react-native-gesture-handler';
 import { useSelector } from 'react-redux';
 import { nickNameSelector } from '../redux/auth/selectors';
-import {
-  addDoc,
-  collection,
-  doc,
-  getDocs,
-  updateDoc,
-} from 'firebase/firestore';
+import { addDoc, collection, doc, getDocs } from 'firebase/firestore';
 import { db } from '../firebase/config';
 
 export function CommentsScreen() {
