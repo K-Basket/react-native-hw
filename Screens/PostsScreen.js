@@ -23,7 +23,6 @@ export function PostsScreen() {
   const [posts, setPosts] = useState(null);
   const nickName = useSelector(nickNameSelector);
   const email = useSelector(emailSelector);
-  const collectionId = useSelector(collectionIdSelector);
 
   const navigation = useNavigation();
 
@@ -39,10 +38,10 @@ export function PostsScreen() {
 
   const getAllPostsFromServer = async () => {
     try {
-      const query = collection(db, 'photoPosts');
+      const q = collection(db, 'photoPosts');
       // const querySnapshot = await getDocs(query);
 
-      onSnapshot(query, querySnapshot => {
+      onSnapshot(q, querySnapshot => {
         // getDocs(query);
         let data = [];
 

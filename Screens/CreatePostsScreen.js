@@ -112,8 +112,7 @@ export function CreatePostsScreen() {
         userId,
       });
 
-      // docRef.id -- это id поста
-      dispatch(updateCollectionId(docRef.id));
+      dispatch(updateCollectionId(docRef.id)); // docRef.id -- это id поста // не нужен!!!
     } catch (error) {
       console.warn(error);
     }

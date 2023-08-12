@@ -7,7 +7,13 @@ import {
   userIdSelector,
 } from '../redux/auth/selectors';
 import { useEffect, useState } from 'react';
-import { collection, getDocs, query, where } from 'firebase/firestore';
+import {
+  collection,
+  getDocs,
+  onSnapshot,
+  query,
+  where,
+} from 'firebase/firestore';
 import { db } from '../firebase/config';
 import { FlatList } from 'react-native-gesture-handler';
 import { Feather } from '@expo/vector-icons';
@@ -19,9 +25,12 @@ export function ProfileScreen() {
   const userId = useSelector(userIdSelector);
   const nickName = useSelector(nickNameSelector);
   const email = useSelector(emailSelector);
-  const collectionId = useSelector(collectionIdSelector);
 
   const navigation = useNavigation();
+
+  useEffect(() => {
+    getUserPosts();
+  }, []);
 
   const getUserPosts = async () => {
     try {
@@ -30,26 +39,51 @@ export function ProfileScreen() {
         where('userId', '==', userId)
       ); // выбирает данные только активного пользователя
 
-      const querySnapshot = await getDocs(q); // получает из DB данные
+      // const querySnapshot = await getDocs(q); // получает из DB данные
 
-      return setUserPosts(() => {
+      onSnapshot(q, querySnapshot => {
         let data = [];
 
         querySnapshot.forEach(doc => {
           data.push({ id: doc.id, ...doc.data() });
         });
-        return data;
-      }); // записывает в State полученные данные
+
+        setUserPosts(data);
+      });
     } catch (error) {
       console.warn(error);
     }
   };
 
-  useEffect(() => {
-    getUserPosts();
-  }, [collectionId]);
+  // ===============================================================================
 
-  // console.log('ProfileScreen/userPosts :>> ', userPosts);
+  // useEffect(() => {
+  //   getUserPosts();
+  // }, [collectionId]);
+
+  // const getUserPosts = async () => {
+  //   try {
+  //     const q = query(
+  //       collection(db, 'photoPosts'),
+  //       where('userId', '==', userId)
+  //     ); // выбирает данные только активного пользователя
+
+  //     const querySnapshot = await getDocs(q); // получает из DB данные
+
+  //     return setUserPosts(() => {
+  //       let data = [];
+
+  //       querySnapshot.forEach(doc => {
+  //         data.push({ id: doc.id, ...doc.data() });
+  //       });
+  //       return data;
+  //     }); // записывает в State полученные данные
+  //   } catch (error) {
+  //     console.warn(error);
+  //   }
+  // };
+
+  // ===============================================================================
 
   return (
     <View style={styles.container}>
@@ -147,7 +181,7 @@ export function ProfileScreen() {
                       fontSize: 16,
                     }}
                   >
-                    0
+                    {item.countComment ? item.countComment : 0}
                   </Text>
                 </View>
 
