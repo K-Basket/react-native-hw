@@ -1,7 +1,7 @@
 import 'react-native-gesture-handler'; // должен быть в самом верху
 import { NavigationContainer } from '@react-navigation/native';
 import { useFonts } from 'expo-font';
-import { StyleSheet } from 'react-native';
+import { Keyboard, StyleSheet, TouchableWithoutFeedback } from 'react-native';
 import { Navigation } from './components/Navigation.js';
 import { Provider } from 'react-redux';
 import { store } from './redux/store.js';

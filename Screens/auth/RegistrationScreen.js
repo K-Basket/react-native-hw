@@ -14,10 +14,11 @@ import {
 } from 'react-native';
 import { useEffect, useState } from 'react';
 import imageBG from '../../assets/img/photo-bg.jpg';
-import avatar from '../../assets/img/avatar-1.jpg';
 import add from '../../assets/img/add.png';
 import { useDispatch, useSelector } from 'react-redux';
 import { authSignUpUser } from '../../redux/auth/operations.js';
+import { avatarSelector } from '../../redux/auth/selectors';
+import avatarSource from '../../assets/img/avatar-1.jpg';
 
 const initialState = {
   login: '',
@@ -29,6 +30,7 @@ export function RegistrationScreen() {
   const [isShowKeyboard, setIsShowKeyboard] = useState(false);
   const [dataInput, setDataInput] = useState(initialState);
   const [isShowPass, setIsShowPass] = useState(true);
+  // const avatar = useSelector(avatarSelector);
 
   const navigation = useNavigation();
   const dispatch = useDispatch();
@@ -40,6 +42,9 @@ export function RegistrationScreen() {
     const hideSubscription = Keyboard.addListener('keyboardWillHide', () => {
       setIsShowKeyboard(false);
     });
+
+    setDataInput(prev => ({ ...prev, avatar: avatarSource }));
+    console.log('avatarSource :>> ', avatarSource);
 
     return () => {
       showSubscription.remove();
@@ -82,7 +87,7 @@ export function RegistrationScreen() {
               style={{ ...styles.form, marginBottom: isShowKeyboard ? 32 : 78 }}
             >
               <View style={{ zIndex: 1 }}>
-                <Image style={styles.imgAvatar} source={avatar} />
+                <Image style={styles.imgAvatar} source={avatarSource} />
                 <TouchableOpacity
                   activeOpacity={0.5}
                   onPress={() => {

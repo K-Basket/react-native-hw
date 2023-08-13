@@ -5,6 +5,7 @@ import {
   Image,
   Keyboard,
   KeyboardAvoidingView,
+  TouchableWithoutFeedback,
   Platform,
   StyleSheet,
   Text,
@@ -13,7 +14,11 @@ import {
 } from 'react-native';
 import { ScrollView, TextInput } from 'react-native-gesture-handler';
 import { useSelector } from 'react-redux';
-import { nickNameSelector } from '../redux/auth/selectors';
+import {
+  avatarSelector,
+  nickNameSelector,
+  userIdSelector,
+} from '../redux/auth/selectors';
 import {
   addDoc,
   collection,
@@ -32,9 +37,11 @@ export function CommentsScreen() {
   const [isShowKeyboard, setIsShowKeyboard] = useState(false);
 
   const nickName = useSelector(nickNameSelector);
+  const avatar = useSelector(avatarSelector);
 
   const { postId, photo } = useRoute().params; // принимаем данные из postsScreen для запииси в базу данных
   // console.log('postId :>> ', postId);
+
   useEffect(() => {
     const showSubscription = Keyboard.addListener('keyboardWillShow', () => {
       setIsShowKeyboard(true);
@@ -56,20 +63,19 @@ export function CommentsScreen() {
   const createCommentsPost = async () => {
     try {
       const ref = doc(db, 'photoPosts', postId);
-      // const ref = doc(db, nickName, postId);
 
       const docRef = await addDoc(collection(ref, 'Comments'), {
         nickName,
         comment,
       });
 
-      setCommentId(docRef.id);
-      // console.log('Comment ID: ', docRef.id); // id коментария
+      setCommentId(docRef.id); // id коментария
     } catch (error) {
       console.warn(error);
     }
 
     setComment('');
+    Keyboard.dismiss();
   };
 
   const getAllCommentsFromServer = async () => {
@@ -103,82 +109,82 @@ export function CommentsScreen() {
     setIsShowKeyboard(true);
   }
 
-  // console.log('allComments :>> ', allComments.length);
-
   return (
     <View style={styles.container}>
-      <View style={styles.wrapImage}>
-        <Image style={styles.image} source={photo} />
-        <View>
-          <FlatList
-            data={allComments}
-            keyExtractor={item => item.id}
-            renderItem={({ item }) => (
-              <View>
-                <Text style={styles.nickName}>{item.nickName}</Text>
-                <Text style={styles.comment}>{item.comment}</Text>
-              </View>
-            )}
-          />
-        </View>
-      </View>
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <>
+          <View style={styles.wrapImage}>
+            <Image style={styles.image} source={photo} />
+          </View>
 
-      <KeyboardAvoidingView
-        style={{
-          // justifyContent: 'flex-end',
-          // alignSelf: 'flex-end',
-          borderWidth: 1,
-          borderColor: 'green',
-        }}
-        behavior={Platform.OS == 'ios' ? 'padding' : 'height'}
-      >
-        {/* <View>
-          <FlatList
-            data={allComments}
-            keyExtractor={item => item.id}
-            renderItem={({ item }) => (
-              <View>
-                <Text style={styles.nickName}>{item.nickName}</Text>
-                <Text style={styles.comment}>{item.comment}</Text>
-              </View>
-            )}
-          />
-        </View> */}
+          <View style={styles.comments}>
+            <FlatList
+              data={allComments}
+              keyExtractor={item => item.id}
+              renderItem={({ item }) => (
+                <View
+                  style={{
+                    ...styles.wrapComment,
+                    flexDirection:
+                      nickName === item.nickName ? 'row-reverse' : 'row',
+                  }}
+                >
+                  <View style={styles.wrapNickName}>
+                    <Text
+                      style={{
+                        ...styles.nickName,
+                        marginLeft: nickName === item.nickName ? 16 : 0,
+                      }}
+                    >
+                      {item.nickName}
+                    </Text>
+                  </View>
 
-        <View
-          style={{
-            ...styles.wrapInput,
-            marginBottom: isShowKeyboard ? 120 : 16,
-          }}
-        >
-          <View>
-            <TextInput
-              style={styles.input}
-              textAlign="left"
-              placeholder="Коментувати..."
-              // onFocus={() => true}
-              // onFocus={onShowKeyboard}
-              value={comment}
-              onChangeText={setComment} // или то же самое запись ниже
-              // onChangeText={value => setComment(value)}
+                  <View style={styles.wrapTextComment}>
+                    <Text style={styles.textComment}>{item.comment}</Text>
+                  </View>
+                </View>
+              )}
             />
           </View>
 
-          <View style={styles.wrapBtn}>
-            <TouchableOpacity activeOpacity={0.8} onPress={createCommentsPost}>
-              <View style={styles.btn}>
-                <Feather
-                  // style={{ position: 'absolute', top: 0, left: -30 }}
-                  name="arrow-up"
-                  size={24}
-                  color="#fff"
+          <KeyboardAvoidingView
+            behavior={Platform.OS == 'ios' ? 'padding' : 'height'}
+          >
+            <View
+              style={{
+                ...styles.wrapInput,
+                marginBottom: isShowKeyboard ? 120 : 34,
+              }}
+            >
+              <View>
+                <TextInput
+                  style={styles.input}
+                  textAlign="left"
+                  placeholder="Коментувати..."
+                  multiline={true}
+                  onFocus={onShowKeyboard}
+                  value={comment}
+                  onChangeText={setComment} // или то же самое запись ниже
+                  // onChangeText={value => setComment(value)}
                 />
               </View>
-              {/* <Text style={styles.text}>Отправить комментарий</Text> */}
-            </TouchableOpacity>
-          </View>
-        </View>
-      </KeyboardAvoidingView>
+
+              <View style={styles.wrapBtn}>
+                <TouchableOpacity
+                  activeOpacity={0.8}
+                  onPress={createCommentsPost}
+                >
+                  <View style={styles.btn}>
+                    <Feather name="arrow-up" size={24} color="#fff" />
+                  </View>
+                  {/* <Text style={styles.text}>Отправить комментарий</Text> */}
+                </TouchableOpacity>
+              </View>
+            </View>
+          </KeyboardAvoidingView>
+        </>
+      </TouchableWithoutFeedback>
     </View>
   );
 }
@@ -186,17 +192,19 @@ export function CommentsScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-
-    marginHorizontal: 16,
     justifyContent: 'space-between',
-    // justifyContent: 'flex-end',
-    // borderWidth: 1,
-    // borderColor: 'gray',
+    paddingHorizontal: 16,
+    backgroundColor: '#fff',
   },
 
   wrapImage: {
     marginTop: 32,
+    marginBottom: 10,
     // width: '100%',
+  },
+  comments: {
+    flex: 2,
+    backgroundColor: '#fff',
   },
   image: {
     width: 396,
@@ -207,17 +215,16 @@ const styles = StyleSheet.create({
   },
 
   wrapInput: {
-    // position: 'absolute',
-    // bottom: 16,
-    // backgroundColor: '#fff',
-    // marginTop: 31,
-    // marginBottom: 16,
+    marginTop: 10,
     flexDirection: 'row',
     alignItems: 'center',
   },
   input: {
-    paddingHorizontal: 16,
-    paddingVertical: 16,
+    paddingLeft: 16,
+    paddingRight: 47,
+
+    paddingBottom: 16,
+    paddingTop: 16,
     minWidth: '100%',
     borderWidth: 1,
     borderRadius: 50,
@@ -252,18 +259,45 @@ const styles = StyleSheet.create({
     color: '#9370db',
   },
 
+  wrapComment: {
+    flexDirection: 'row',
+    // flexDirection: 'row-reverse',
+    marginTop: 24,
+  },
+
+  wrapNickName: {
+    marginTop: 5,
+    // marginRight: 16,
+    width: '20%',
+  },
   nickName: {
-    marginTop: 15,
     color: 'brown',
     fontFamily: 'Roboto-700',
+    // textAlign: 'right',
+    marginLeft: 16,
   },
-  comment: {
-    marginTop: 5,
-    paddingVertical: 7,
-    paddingHorizontal: 10,
-    width: 200,
+  imgAvatar: {
+    width: 28,
+    height: 28,
     borderWidth: 1,
-    borderColor: 'gray',
-    borderRadius: 10,
+  },
+
+  wrapTextComment: {
+    marginTop: 5,
+    padding: 16,
+    width: '80%',
+    borderBottomLeftRadius: 6,
+    borderBottomRightRadius: 6,
+    borderTopRightRadius: 6,
+    backgroundColor: 'rgba(0, 0, 0, 0.03)',
+
+    // backgroundColor: 'salmon',
+  },
+  textComment: {
+    // textAlign: 'right',
+    fontFamily: 'Roboto-400',
+    fontSize: 13,
+    color: '#212121',
+    lineHeight: 18,
   },
 });

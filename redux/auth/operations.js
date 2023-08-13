@@ -11,7 +11,7 @@ import { authSignOut, authStateChange, updateUserProfile } from './sliceAuth';
 
 // Регистрация Usera в базе firebase
 export const authSignUpUser =
-  ({ login, email, password }) =>
+  ({ login, email, password, avatar }) =>
   async (dispatch, getState) => {
     try {
       // созлдать usera в базе Firebase
@@ -20,11 +20,12 @@ export const authSignUpUser =
       // обновить данные usera в базе firebase
       await updateProfile(auth.currentUser, {
         displayName: login,
+        avatarPhoto: avatar,
       });
 
       // получить данные пользователя
       // const userCurrent = auth.currentUser;
-      const { uid, displayName } = auth.currentUser;
+      const { uid, displayName, avatarPhoto } = auth.currentUser;
 
       // отправить в Store данные пользователя
       dispatch(
@@ -32,6 +33,7 @@ export const authSignUpUser =
           userId: uid,
           nickName: displayName,
           email,
+          avatar: avatarPhoto,
         })
       );
     } catch (error) {

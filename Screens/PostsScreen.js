@@ -9,19 +9,22 @@ import {
   FlatList,
   TouchableOpacity,
 } from 'react-native';
-import avatar from '../assets/img/avatar-1.jpg';
+// import avatar from '../assets/img/avatar-1.jpg';
 import { collection, onSnapshot } from 'firebase/firestore';
 import { db } from '../firebase/config';
 import { useSelector } from 'react-redux';
 import {
+  avatarSelector,
   collectionIdSelector,
   emailSelector,
   nickNameSelector,
 } from '../redux/auth/selectors';
+import avatarSource from '../assets/img/avatar-1.jpg';
 
 export function PostsScreen() {
   const [posts, setPosts] = useState(null);
   const nickName = useSelector(nickNameSelector);
+  // const avatar = useSelector(avatarSelector);
   const email = useSelector(emailSelector);
 
   const navigation = useNavigation();
@@ -97,7 +100,7 @@ export function PostsScreen() {
       >
         <Image
           style={{ width: 60, height: 60, borderRadius: 16 }}
-          source={avatar}
+          source={avatarSource}
         />
         <View style={{ marginLeft: 8 }}>
           <Text
