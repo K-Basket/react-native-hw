@@ -3,12 +3,15 @@ import { useEffect, useState } from 'react';
 import {
   FlatList,
   Image,
+  Keyboard,
+  KeyboardAvoidingView,
+  Platform,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
 } from 'react-native';
-import { TextInput } from 'react-native-gesture-handler';
+import { ScrollView, TextInput } from 'react-native-gesture-handler';
 import { useSelector } from 'react-redux';
 import { nickNameSelector } from '../redux/auth/selectors';
 import {
@@ -26,10 +29,25 @@ export function CommentsScreen() {
   const [comment, setComment] = useState('');
   const [commentId, setCommentId] = useState('');
   const [allComments, setAllComments] = useState([]);
+  const [isShowKeyboard, setIsShowKeyboard] = useState(false);
+
   const nickName = useSelector(nickNameSelector);
 
   const { postId, photo } = useRoute().params; // принимаем данные из postsScreen для запииси в базу данных
   // console.log('postId :>> ', postId);
+  useEffect(() => {
+    const showSubscription = Keyboard.addListener('keyboardWillShow', () => {
+      setIsShowKeyboard(true);
+    });
+    const hideSubscription = Keyboard.addListener('keyboardWillHide', () => {
+      setIsShowKeyboard(false);
+    });
+
+    return () => {
+      showSubscription.remove();
+      hideSubscription.remove();
+    };
+  }, []);
 
   useEffect(() => {
     getAllCommentsFromServer();
@@ -81,53 +99,86 @@ export function CommentsScreen() {
     }
   };
 
+  function onShowKeyboard() {
+    setIsShowKeyboard(true);
+  }
+
   // console.log('allComments :>> ', allComments.length);
 
   return (
     <View style={styles.container}>
       <View style={styles.wrapImage}>
         <Image style={styles.image} source={photo} />
-      </View>
-
-      <View>
-        <FlatList
-          data={allComments}
-          keyExtractor={item => item.id}
-          renderItem={({ item }) => (
-            <View>
-              <Text style={styles.nickName}>{item.nickName}</Text>
-              <Text style={styles.comment}>{item.comment}</Text>
-            </View>
-          )}
-        />
-      </View>
-
-      <View style={styles.wrapInput}>
         <View>
-          <TextInput
-            style={styles.input}
-            textAlign="left"
-            placeholder="Коментувати..."
-            value={comment}
-            onChangeText={setComment} // или то же самое запись ниже
-            // onChangeText={value => setComment(value)}
+          <FlatList
+            data={allComments}
+            keyExtractor={item => item.id}
+            renderItem={({ item }) => (
+              <View>
+                <Text style={styles.nickName}>{item.nickName}</Text>
+                <Text style={styles.comment}>{item.comment}</Text>
+              </View>
+            )}
           />
         </View>
-
-        <View style={styles.wrapBtn}>
-          <TouchableOpacity activeOpacity={0.8} onPress={createCommentsPost}>
-            <View style={styles.btn}>
-              <Feather
-                // style={{ position: 'absolute', top: 0, left: -30 }}
-                name="arrow-up"
-                size={24}
-                color="#fff"
-              />
-            </View>
-            {/* <Text style={styles.text}>Отправить комментарий</Text> */}
-          </TouchableOpacity>
-        </View>
       </View>
+
+      <KeyboardAvoidingView
+        style={{
+          // justifyContent: 'flex-end',
+          // alignSelf: 'flex-end',
+          borderWidth: 1,
+          borderColor: 'green',
+        }}
+        behavior={Platform.OS == 'ios' ? 'padding' : 'height'}
+      >
+        {/* <View>
+          <FlatList
+            data={allComments}
+            keyExtractor={item => item.id}
+            renderItem={({ item }) => (
+              <View>
+                <Text style={styles.nickName}>{item.nickName}</Text>
+                <Text style={styles.comment}>{item.comment}</Text>
+              </View>
+            )}
+          />
+        </View> */}
+
+        <View
+          style={{
+            ...styles.wrapInput,
+            marginBottom: isShowKeyboard ? 120 : 16,
+          }}
+        >
+          <View>
+            <TextInput
+              style={styles.input}
+              textAlign="left"
+              placeholder="Коментувати..."
+              // onFocus={() => true}
+              // onFocus={onShowKeyboard}
+              value={comment}
+              onChangeText={setComment} // или то же самое запись ниже
+              // onChangeText={value => setComment(value)}
+            />
+          </View>
+
+          <View style={styles.wrapBtn}>
+            <TouchableOpacity activeOpacity={0.8} onPress={createCommentsPost}>
+              <View style={styles.btn}>
+                <Feather
+                  // style={{ position: 'absolute', top: 0, left: -30 }}
+                  name="arrow-up"
+                  size={24}
+                  color="#fff"
+                />
+              </View>
+              {/* <Text style={styles.text}>Отправить комментарий</Text> */}
+            </TouchableOpacity>
+          </View>
+        </View>
+      </KeyboardAvoidingView>
     </View>
   );
 }
@@ -135,8 +186,10 @@ export function CommentsScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginHorizontal: 16,
 
+    marginHorizontal: 16,
+    justifyContent: 'space-between',
+    // justifyContent: 'flex-end',
     // borderWidth: 1,
     // borderColor: 'gray',
   },
@@ -154,7 +207,11 @@ const styles = StyleSheet.create({
   },
 
   wrapInput: {
-    marginTop: 31,
+    // position: 'absolute',
+    // bottom: 16,
+    // backgroundColor: '#fff',
+    // marginTop: 31,
+    // marginBottom: 16,
     flexDirection: 'row',
     alignItems: 'center',
   },
