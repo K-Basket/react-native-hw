@@ -20,6 +20,7 @@ import {
   updateDoc,
 } from 'firebase/firestore';
 import { db } from '../firebase/config';
+import { Feather } from '@expo/vector-icons';
 
 export function CommentsScreen() {
   const [comment, setComment] = useState('');
@@ -84,51 +85,48 @@ export function CommentsScreen() {
 
   return (
     <View style={styles.container}>
-      <View>
-        <Image
-          source={photo}
-          style={{
-            marginTop: 10,
-            width: 400,
-            height: 240,
-            borderColor: 'green',
-            borderWidth: 1,
-            borderRadius: 8,
-          }}
-        />
-      </View>
-
-      <FlatList
-        data={allComments}
-        keyExtractor={item => item.id}
-        renderItem={({ item }) => (
-          <View>
-            <Text style={styles.nickName}>{item.nickName}</Text>
-            <Text style={styles.comment}>{item.comment}</Text>
-          </View>
-        )}
-      />
-      <View>
-        <TextInput
-          style={{ ...styles.input }}
-          textAlign="left"
-          placeholder="add comments..."
-          value={comment}
-          onChangeText={setComment} // или то же самое запись ниже
-          // onChangeText={value => setComment(value)}
-        />
+      <View style={styles.wrapImage}>
+        <Image style={styles.image} source={photo} />
       </View>
 
       <View>
-        <TouchableOpacity
-          style={{
-            ...styles.btn,
-          }}
-          activeOpacity={0.8}
-          onPress={createCommentsPost}
-        >
-          <Text style={styles.text}>Отправить комментарий</Text>
-        </TouchableOpacity>
+        <FlatList
+          data={allComments}
+          keyExtractor={item => item.id}
+          renderItem={({ item }) => (
+            <View>
+              <Text style={styles.nickName}>{item.nickName}</Text>
+              <Text style={styles.comment}>{item.comment}</Text>
+            </View>
+          )}
+        />
+      </View>
+
+      <View style={styles.wrapInput}>
+        <View>
+          <TextInput
+            style={styles.input}
+            textAlign="left"
+            placeholder="Коментувати..."
+            value={comment}
+            onChangeText={setComment} // или то же самое запись ниже
+            // onChangeText={value => setComment(value)}
+          />
+        </View>
+
+        <View style={styles.wrapBtn}>
+          <TouchableOpacity activeOpacity={0.8} onPress={createCommentsPost}>
+            <View style={styles.btn}>
+              <Feather
+                // style={{ position: 'absolute', top: 0, left: -30 }}
+                name="arrow-up"
+                size={24}
+                color="#fff"
+              />
+            </View>
+            {/* <Text style={styles.text}>Отправить комментарий</Text> */}
+          </TouchableOpacity>
+        </View>
       </View>
     </View>
   );
@@ -137,12 +135,54 @@ export function CommentsScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    // justifyContent: 'flex-end',
-    justifyContent: 'center',
-    alignItems: 'center',
-    // marginBottom: 400,
+    marginHorizontal: 16,
+
+    // borderWidth: 1,
+    // borderColor: 'gray',
   },
-  btn: {},
+
+  wrapImage: {
+    marginTop: 32,
+    // width: '100%',
+  },
+  image: {
+    width: 396,
+    // width: 'inherit',
+    height: 240,
+    borderRadius: 8,
+    backgroundColor: '#fff',
+  },
+
+  wrapInput: {
+    marginTop: 31,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  input: {
+    paddingHorizontal: 16,
+    paddingVertical: 16,
+    minWidth: '100%',
+    borderWidth: 1,
+    borderRadius: 50,
+    borderColor: 'gray',
+    color: '#212121',
+    fontFamily: 'Roboto-500',
+    fontSize: 16,
+  },
+
+  wrapBtn: {
+    position: 'absolute',
+    right: 8,
+  },
+  btn: {
+    width: 34,
+    height: 34,
+    borderRadius: 50,
+    backgroundColor: '#FF6C00',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+
   text: {
     marginBottom: 100,
     paddingHorizontal: 15,
@@ -154,18 +194,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     color: '#9370db',
   },
-  input: {
-    paddingHorizontal: 16,
-    marginBottom: 15,
-    height: 50,
-    width: 350,
-    fontFamily: 'Roboto-400',
-    fontSize: 16,
-    borderWidth: 1,
-    borderRadius: 6,
-    color: '#212121',
-    borderColor: 'gray',
-  },
+
   nickName: {
     marginTop: 15,
     color: 'brown',
