@@ -13,6 +13,8 @@ import {
 import { useEffect, useState } from 'react';
 import logoBG from '../../assets/img/photo-bg.jpg';
 import { useNavigation } from '@react-navigation/native';
+import { authSignInUser } from '../../redux/auth/operations';
+import { useDispatch } from 'react-redux';
 
 const initialState = {
   email: '',
@@ -23,7 +25,9 @@ export function LoginScreen() {
   const [isShowKeyboard, setIsShowKeyboard] = useState(false);
   const [dataInput, setDataInput] = useState(initialState);
   const [isShowPass, setIsShowPass] = useState(true);
+
   const navigation = useNavigation();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const showSubscription = Keyboard.addListener('keyboardWillShow', () => {
@@ -47,10 +51,10 @@ export function LoginScreen() {
     if (!dataInput.email || !dataInput.password)
       return console.warn('Please fill in all fields!');
 
+    dispatch(authSignInUser(dataInput));
+
     setIsShowPass(true);
     setDataInput(initialState);
-
-    navigation.navigate('Home');
   }
 
   function onLogin() {
@@ -84,6 +88,7 @@ export function LoginScreen() {
                   style={styles.input}
                   textAlign="left"
                   placeholder="Адреса електронної пошти"
+                  keyboardType="email-address"
                   onFocus={onShowKeyboard}
                   value={dataInput.email}
                   onChangeText={value =>

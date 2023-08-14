@@ -5,9 +5,20 @@ import { CommentsScreen } from '../Screens/CommentsScreen';
 import { MapScreen } from '../Screens/MapScreen';
 import { Home } from './Home';
 import { Button } from 'react-native';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { authStateChangeUser } from '../redux/auth/operations';
+import { isLoggetInSelector } from '../redux/auth/selectors';
 
 export function Navigation() {
   const MainStack = createStackNavigator(); // переходы мажду экранами
+  const dispatch = useDispatch();
+  const isLoggetIn = useSelector(isLoggetInSelector);
+
+  // при входе в приложение запускает проверку логиинизации Usera
+  useEffect(() => {
+    dispatch(authStateChangeUser());
+  }, []);
 
   const optionsHome = {
     headerShown: false,
@@ -32,20 +43,30 @@ export function Navigation() {
 
   return (
     <>
-      <MainStack.Navigator initialRouteName="LoginScreen">
-        <MainStack.Screen
-          name="Registration"
-          component={RegistrationScreen}
-          options={{ headerShown: false }} // скрывает header
-        />
+      <MainStack.Navigator initialRouteName="Login">
+        {!isLoggetIn && (
+          <>
+            <MainStack.Screen
+              name="Registration"
+              component={RegistrationScreen}
+              options={{ headerShown: false }} // скрывает header
+            />
 
-        <MainStack.Screen
-          name="Login"
-          component={LoginScreen}
-          options={{ headerShown: false }}
-        />
+            <MainStack.Screen
+              name="Login"
+              component={LoginScreen}
+              options={{ headerShown: false }}
+            />
+          </>
+        )}
 
-        <MainStack.Screen name="Home" component={Home} options={optionsHome} />
+        {isLoggetIn && (
+          <MainStack.Screen
+            name="Home"
+            component={Home}
+            options={optionsHome}
+          />
+        )}
 
         <MainStack.Screen
           name="Comments"

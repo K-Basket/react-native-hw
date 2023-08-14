@@ -14,8 +14,10 @@ import {
 } from 'react-native';
 import { useEffect, useState } from 'react';
 import imageBG from '../../assets/img/photo-bg.jpg';
-import avatar from '../../assets/img/avatar-1.jpg';
 import add from '../../assets/img/add.png';
+import { useDispatch } from 'react-redux';
+import { authSignUpUser } from '../../redux/auth/operations.js';
+import avatarSource from '../../assets/img/avatar-1.jpg';
 
 const initialState = {
   login: '',
@@ -29,6 +31,7 @@ export function RegistrationScreen() {
   const [isShowPass, setIsShowPass] = useState(true);
 
   const navigation = useNavigation();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const showSubscription = Keyboard.addListener('keyboardWillShow', () => {
@@ -37,6 +40,9 @@ export function RegistrationScreen() {
     const hideSubscription = Keyboard.addListener('keyboardWillHide', () => {
       setIsShowKeyboard(false);
     });
+
+    setDataInput(prev => ({ ...prev, avatar: avatarSource }));
+    console.log('avatarSource :>> ', avatarSource);
 
     return () => {
       showSubscription.remove();
@@ -52,10 +58,11 @@ export function RegistrationScreen() {
     if (!dataInput.login || !dataInput.email || !dataInput.password)
       return console.warn('Please fill in all fields!');
 
+    // отправляет данные input для регистрации Usera
+    dispatch(authSignUpUser(dataInput));
+
     setIsShowPass(true);
     setDataInput(initialState);
-
-    navigation.navigate('Home');
   }
 
   function onLogin() {
@@ -78,7 +85,7 @@ export function RegistrationScreen() {
               style={{ ...styles.form, marginBottom: isShowKeyboard ? 32 : 78 }}
             >
               <View style={{ zIndex: 1 }}>
-                <Image style={styles.imgAvatar} source={avatar} />
+                <Image style={styles.imgAvatar} source={avatarSource} />
                 <TouchableOpacity
                   activeOpacity={0.5}
                   onPress={() => {
@@ -100,7 +107,7 @@ export function RegistrationScreen() {
                   placeholder="Логін"
                   onFocus={onShowKeyboard}
                   onBlur={() => {
-                    console.log('onBlur');
+                    // console.log('onBlur');
                   }}
                   value={dataInput.login} // передаем данные из state
                   onChangeText={value =>
@@ -248,8 +255,6 @@ const styles = StyleSheet.create({
   },
   linkTitle: {
     paddingTop: 16,
-    // alignSelf: 'flex-start', // вносит изменения, заданные родителькими
-
     fontFamily: 'Roboto-400',
     fontSize: 16,
     textAlign: 'center',

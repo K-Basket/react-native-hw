@@ -1,4 +1,4 @@
-import { useNavigation, useRoute } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import { Feather } from '@expo/vector-icons';
 import { useEffect, useState } from 'react';
 import {
@@ -9,18 +9,44 @@ import {
   FlatList,
   TouchableOpacity,
 } from 'react-native';
-import avatar from '../assets/img/avatar-1.jpg';
+import { collection, onSnapshot } from 'firebase/firestore';
+import { db } from '../firebase/config';
+import { useSelector } from 'react-redux';
+import { emailSelector, nickNameSelector } from '../redux/auth/selectors';
+import avatarSource from '../assets/img/avatar-1.jpg';
 
 export function PostsScreen() {
-  const [posts, setPosts] = useState([]);
+  const [posts, setPosts] = useState(null);
+  const nickName = useSelector(nickNameSelector);
+  const email = useSelector(emailSelector);
+
   const navigation = useNavigation();
-  const { params } = useRoute(); // принимаем данные из др Screens
 
   useEffect(() => {
-    if (params) {
-      setPosts(prev => [...prev, params]);
+    getAllPostsFromServer();
+  }, []);
+
+  const getAllPostsFromServer = async () => {
+    try {
+      const q = collection(db, 'photoPosts');
+      // const querySnapshot = await getDocs(query);
+
+      const unsubscribe = onSnapshot(q, querySnapshot => {
+        // getDocs(q);
+        let data = [];
+
+        querySnapshot.forEach(doc => {
+          data.push({ id: doc.id, ...doc.data() });
+        }); // записывает в переменную data данные с сервера
+
+        setPosts(data);
+        // unsubscribe(); // снимает слущателя
+      });
+    } catch (error) {
+      console.log(error);
+      throw error;
     }
-  }, [params]);
+  };
 
   return (
     <View style={styles.container}>
@@ -35,13 +61,13 @@ export function PostsScreen() {
       >
         <Image
           style={{ width: 60, height: 60, borderRadius: 16 }}
-          source={avatar}
+          source={avatarSource}
         />
         <View style={{ marginLeft: 8 }}>
           <Text
             style={{ fontFamily: 'Roboto-700', fontSize: 13, color: '#212121' }}
           >
-            Natali Romanova
+            {nickName}
           </Text>
           <Text
             style={{
@@ -50,17 +76,17 @@ export function PostsScreen() {
               color: 'rgba(33, 33, 33, 0.80)',
             }}
           >
-            email@example.com
+            {email}
           </Text>
         </View>
       </View>
 
       <FlatList
         data={posts}
-        keyExtractor={(item, indx) => indx.toString()}
+        keyExtractor={item => item.id}
         renderItem={({ item }) => (
           <View>
-            <View style={styles.wrapImage}>
+            <View>
               <Image
                 source={item.photo}
                 style={{
@@ -105,7 +131,10 @@ export function PostsScreen() {
                     // style={styles.btnCamera}
                     activeOpacity={0.8}
                     onPress={() => {
-                      navigation.navigate('Comments');
+                      navigation.navigate('Comments', {
+                        postId: item.id,
+                        photo: item.photo,
+                      }); // передает данные поста в CommentScreen
                     }}
                   >
                     <Feather name="message-circle" size={24} color="#BDBDBD" />
@@ -118,30 +147,23 @@ export function PostsScreen() {
                       fontSize: 16,
                     }}
                   >
-                    0
+                    {item.countComment ? item.countComment : 0}
                   </Text>
                 </View>
 
                 <View>
                   <TouchableOpacity
-                    // style={styles.btnCamera}
                     style={{
                       flexDirection: 'row',
                       alignItems: 'center',
-                      // justifyContent: 'space-between',
                     }}
                     activeOpacity={0.8}
                     onPress={() => {
-                      navigation.navigate('Map', { location: params.location });
+                      navigation.navigate('Map', { location: item.location });
                     }}
                   >
                     <View>
-                      <Feather
-                        // style={{ position: 'absolute', top: 0, left: -30 }}
-                        name="map-pin"
-                        size={24}
-                        color="#BDBDBD"
-                      />
+                      <Feather name="map-pin" size={24} color="#BDBDBD" />
                     </View>
 
                     <View style={{ marginLeft: 4 }}>
@@ -182,5 +204,4 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#fff',
   },
-  wrapImage: {},
 });

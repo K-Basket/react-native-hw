@@ -13,18 +13,27 @@ import { Camera, CameraType } from 'expo-camera';
 import { useEffect, useState } from 'react';
 import * as MediaLibrary from 'expo-media-library';
 import * as Location from 'expo-location';
+import { db } from '../firebase/config';
+import { addDoc, collection } from 'firebase/firestore';
+import { nickNameSelector, userIdSelector } from '../redux/auth/selectors';
+import { useDispatch, useSelector } from 'react-redux';
+import { updateCollectionId } from '../redux/auth/sliceAuth';
 
 export function CreatePostsScreen() {
   const [hasPermission, setHasPermission] = useState(null);
   const [cameraRef, setCameraRef] = useState(null); // снимок c камеры
-  const [photo, setPhoto] = useState(null);
+  const [photo, setPhoto] = useState(null); // фото из библиотеки фоток телефона
   const [type, setType] = useState(CameraType.back);
   const [inputTitlePhoto, setInputTitlePhoto] = useState('');
   const [inputLocation, setInputLocation] = useState('');
   const [location, setLocation] = useState(null);
   const [address, setAddress] = useState(null);
 
+  const nickName = useSelector(nickNameSelector);
+  const userId = useSelector(userIdSelector);
+
   const navigation = useNavigation();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     // запрос на разрешение использовать камеру и сохранять в девайс фотки
@@ -58,10 +67,10 @@ export function CreatePostsScreen() {
   async function takePhoto() {
     if (cameraRef) {
       const { uri } = await cameraRef.takePictureAsync(); // uri - ссылка на снимок
-      const photoLib = await MediaLibrary.createAssetAsync(uri); // сохранение снимка в библиотеку телефона
+      const photoLib = await MediaLibrary.createAssetAsync(uri); // сохраняет снимок в библиотеку телефона
       setPhoto(photoLib);
 
-      const location = await Location.getCurrentPositionAsync({}); // локация сделанной фотки
+      const location = await Location.getCurrentPositionAsync({}); // возвращает локацию сделанной фотки
       const coords = {
         latitude: location.coords.latitude,
         longitude: location.coords.longitude,
@@ -83,16 +92,30 @@ export function CreatePostsScreen() {
       return;
     }
 
-    navigation.navigate('Posts', {
-      location,
-      photo,
-      inputTitlePhoto,
-      inputLocation,
-      address,
-    }); // передача данных на страцу Posts
+    uploadDataToServer(); // загружает данные на сервер
+    navigation.navigate('Posts');
     setInputTitlePhoto('');
     setInputLocation('');
     setPhoto(null);
+  }
+
+  // загружает в базу данных post
+  async function uploadDataToServer() {
+    try {
+      const docRef = await addDoc(collection(db, 'photoPosts'), {
+        photo,
+        inputTitlePhoto,
+        inputLocation,
+        location,
+        address,
+        nickName,
+        userId,
+      });
+
+      dispatch(updateCollectionId(docRef.id)); // docRef.id -- это id поста // не нужен!!!
+    } catch (error) {
+      console.warn(error);
+    }
   }
 
   return (
