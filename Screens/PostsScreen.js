@@ -37,8 +37,6 @@ export function PostsScreen() {
   //   if (collectionId || email) getAllPostsFromServer();
   // }, [collectionId, email]);
 
-  // =================================================================================
-
   const getAllPostsFromServer = async () => {
     try {
       const q = collection(db, 'photoPosts');
