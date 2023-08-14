@@ -12,7 +12,6 @@ export function BtnLogout({ styleProp }) {
       activeOpacity={0.3}
       onPress={() => {
         dispatch(authSignOutUser());
-        console.log('Hi');
       }}
     >
       <Feather name="log-out" size={24} color="#BDBDBD" />

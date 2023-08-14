@@ -35,10 +35,9 @@ export function ProfileScreen() {
         collection(db, 'photoPosts'),
         where('userId', '==', userId)
       ); // выбирает данные только активного пользователя
-
       // const querySnapshot = await getDocs(q); // получает из DB данные
 
-      onSnapshot(q, querySnapshot => {
+      const unsubscribe = onSnapshot(q, querySnapshot => {
         let data = [];
 
         querySnapshot.forEach(doc => {
@@ -46,6 +45,7 @@ export function ProfileScreen() {
         });
 
         setUserPosts(data);
+        unsubscribe(); // снимает слущателя
       });
     } catch (error) {
       console.warn(error);

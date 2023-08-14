@@ -53,8 +53,8 @@ export const authSignInUser =
 
 // Logout Usera
 export const authSignOutUser = () => async (dispatch, getState) => {
-  await signOut(auth);
   dispatch(authSignOut());
+  await signOut(auth);
 };
 
 // проверка аутентификации пользователя

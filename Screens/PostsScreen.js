@@ -31,8 +31,8 @@ export function PostsScreen() {
       const q = collection(db, 'photoPosts');
       // const querySnapshot = await getDocs(query);
 
-      onSnapshot(q, querySnapshot => {
-        // getDocs(query);
+      const unsubscribe = onSnapshot(q, querySnapshot => {
+        // getDocs(q);
         let data = [];
 
         querySnapshot.forEach(doc => {
@@ -40,6 +40,7 @@ export function PostsScreen() {
         }); // записывает в переменную data данные с сервера
 
         setPosts(data);
+        // unsubscribe(); // снимает слущателя
       });
     } catch (error) {
       console.log(error);
