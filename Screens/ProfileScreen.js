@@ -45,7 +45,7 @@ export function ProfileScreen() {
         });
 
         setUserPosts(data);
-        unsubscribe(); // снимает слущателя
+        // unsubscribe(); // снимает слущателя
       });
     } catch (error) {
       console.warn(error);
