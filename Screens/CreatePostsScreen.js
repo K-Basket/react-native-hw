@@ -118,26 +118,6 @@ export function CreatePostsScreen() {
     }
   }
 
-  // ========================================== создает для каждого пользователя коллекцию в DB
-  // async function uploadDataToServer() {
-  //   try {
-  //     const docRef = await addDoc(collection(db, nickName), {
-  //       photo,
-  //       inputTitlePhoto,
-  //       inputLocation,
-  //       location,
-  //       address,
-  //       nickName,
-  //       userId,
-  //     });
-
-  //     // docRef.id -- это id поста
-  //     dispatch(updateCollectionId(docRef.id));
-  //   } catch (error) {
-  //     console.warn(error);
-  //   }
-  // }
-
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
       <View style={styles.container}>

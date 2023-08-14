@@ -9,22 +9,15 @@ import {
   FlatList,
   TouchableOpacity,
 } from 'react-native';
-// import avatar from '../assets/img/avatar-1.jpg';
 import { collection, onSnapshot } from 'firebase/firestore';
 import { db } from '../firebase/config';
 import { useSelector } from 'react-redux';
-import {
-  avatarSelector,
-  collectionIdSelector,
-  emailSelector,
-  nickNameSelector,
-} from '../redux/auth/selectors';
+import { emailSelector, nickNameSelector } from '../redux/auth/selectors';
 import avatarSource from '../assets/img/avatar-1.jpg';
 
 export function PostsScreen() {
   const [posts, setPosts] = useState(null);
   const nickName = useSelector(nickNameSelector);
-  // const avatar = useSelector(avatarSelector);
   const email = useSelector(emailSelector);
 
   const navigation = useNavigation();
@@ -32,10 +25,6 @@ export function PostsScreen() {
   useEffect(() => {
     getAllPostsFromServer();
   }, []);
-
-  // useEffect(() => {
-  //   if (collectionId || email) getAllPostsFromServer();
-  // }, [collectionId, email]);
 
   const getAllPostsFromServer = async () => {
     try {
@@ -57,33 +46,6 @@ export function PostsScreen() {
       throw error;
     }
   };
-
-  // =================================================================================
-
-  // const getAllPostsFromServer = async () => {
-  //   try {
-  //     // получает данные с сервера
-  //     const querySnapshot = await getDocs(collection(db, 'photoPosts'));
-  //     // const querySnapshot = await getDocs(collection(db, nickName));
-
-  //     return setPosts(() => {
-  //       let data = [];
-  //       // записывает в переменную data данные с сервера
-  //       querySnapshot.forEach(doc => {
-  //         data.push({ id: doc.id, ...doc.data() });
-  //       });
-
-  //       return data;
-  //     });
-  //   } catch (error) {
-  //     console.log(error);
-  //     throw error;
-  //   }
-  // };
-
-  // // console.log('PostsScreen / posts :>> ', posts);
-
-  // =================================================================================
 
   return (
     <View style={styles.container}>
@@ -120,11 +82,10 @@ export function PostsScreen() {
 
       <FlatList
         data={posts}
-        // keyExtractor={(item, indx) => indx.toString()}
         keyExtractor={item => item.id}
         renderItem={({ item }) => (
           <View>
-            <View style={styles.wrapImage}>
+            <View>
               <Image
                 source={item.photo}
                 style={{
@@ -191,11 +152,9 @@ export function PostsScreen() {
 
                 <View>
                   <TouchableOpacity
-                    // style={styles.btnCamera}
                     style={{
                       flexDirection: 'row',
                       alignItems: 'center',
-                      // justifyContent: 'space-between',
                     }}
                     activeOpacity={0.8}
                     onPress={() => {
@@ -203,12 +162,7 @@ export function PostsScreen() {
                     }}
                   >
                     <View>
-                      <Feather
-                        // style={{ position: 'absolute', top: 0, left: -30 }}
-                        name="map-pin"
-                        size={24}
-                        color="#BDBDBD"
-                      />
+                      <Feather name="map-pin" size={24} color="#BDBDBD" />
                     </View>
 
                     <View style={{ marginLeft: 4 }}>
@@ -249,5 +203,4 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#fff',
   },
-  wrapImage: {},
 });

@@ -15,9 +15,6 @@ export function Navigation() {
   const dispatch = useDispatch();
   const isLoggetIn = useSelector(isLoggetInSelector);
 
-  // const userId = useSelector(state => state.auth.userId);
-  // const nickName = useSelector(state => state.auth.nickName);
-
   // при входе в приложение запускает проверку логиинизации Usera
   useEffect(() => {
     dispatch(authStateChangeUser());

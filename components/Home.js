@@ -7,8 +7,8 @@ import { PostsScreen } from '../Screens/PostsScreen';
 import { CreatePostsScreen } from '../Screens/CreatePostsScreen';
 import { ProfileScreen } from '../Screens/ProfileScreen';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import { authSignOutUser } from '../redux/auth/operations';
 import { useDispatch } from 'react-redux';
+import { BtnLogout } from '../helpers/BtnLogout';
 
 export function Home() {
   const Tabs = createBottomTabNavigator(); // нижняя навигация
@@ -17,20 +17,7 @@ export function Home() {
 
   const optionPosts = {
     title: 'Публікації',
-    headerRight: () => {
-      return (
-        <TouchableOpacity
-          style={{ marginRight: 10 }}
-          activeOpacity={0.3}
-          onPress={() => {
-            dispatch(authSignOutUser());
-            // navigation.navigate('Login');
-          }}
-        >
-          <Feather name="log-out" size={24} color="#BDBDBD" />
-        </TouchableOpacity>
-      );
-    },
+    headerRight: () => <BtnLogout styleProp={{ marginRight: 10 }} />,
     tabBarIcon: ({ focused, size, color }) => (
       <Feather
         style={{ alignSelf: 'flex-end', marginRight: 39 }}

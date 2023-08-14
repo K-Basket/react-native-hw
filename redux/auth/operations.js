@@ -7,7 +7,6 @@ import {
 } from 'firebase/auth';
 import { auth } from '../../firebase/config';
 import { authSignOut, authStateChange, updateUserProfile } from './sliceAuth';
-// const dispatch = useDispatch();
 
 // Регистрация Usera в базе firebase
 export const authSignUpUser =

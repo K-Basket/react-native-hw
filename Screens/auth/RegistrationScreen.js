@@ -15,9 +15,8 @@ import {
 import { useEffect, useState } from 'react';
 import imageBG from '../../assets/img/photo-bg.jpg';
 import add from '../../assets/img/add.png';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { authSignUpUser } from '../../redux/auth/operations.js';
-import { avatarSelector } from '../../redux/auth/selectors';
 import avatarSource from '../../assets/img/avatar-1.jpg';
 
 const initialState = {
@@ -30,7 +29,6 @@ export function RegistrationScreen() {
   const [isShowKeyboard, setIsShowKeyboard] = useState(false);
   const [dataInput, setDataInput] = useState(initialState);
   const [isShowPass, setIsShowPass] = useState(true);
-  // const avatar = useSelector(avatarSelector);
 
   const navigation = useNavigation();
   const dispatch = useDispatch();

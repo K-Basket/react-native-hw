@@ -15,7 +15,6 @@ import logoBG from '../../assets/img/photo-bg.jpg';
 import { useNavigation } from '@react-navigation/native';
 import { authSignInUser } from '../../redux/auth/operations';
 import { useDispatch } from 'react-redux';
-import { getAuth, onAuthStateChanged } from 'firebase/auth';
 
 const initialState = {
   email: '',
@@ -26,7 +25,6 @@ export function LoginScreen() {
   const [isShowKeyboard, setIsShowKeyboard] = useState(false);
   const [dataInput, setDataInput] = useState(initialState);
   const [isShowPass, setIsShowPass] = useState(true);
-  const [user, setUser] = useState(); // вывести в Redux состояние !!! заменить
 
   const navigation = useNavigation();
   const dispatch = useDispatch();

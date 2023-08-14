@@ -12,13 +12,9 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import { ScrollView, TextInput } from 'react-native-gesture-handler';
+import { TextInput } from 'react-native-gesture-handler';
 import { useSelector } from 'react-redux';
-import {
-  avatarSelector,
-  nickNameSelector,
-  userIdSelector,
-} from '../redux/auth/selectors';
+import { avatarSelector, nickNameSelector } from '../redux/auth/selectors';
 import {
   addDoc,
   collection,
@@ -182,7 +178,6 @@ export function CommentsScreen() {
                   <View style={styles.btn}>
                     <Feather name="arrow-up" size={24} color="#fff" />
                   </View>
-                  {/* <Text style={styles.text}>Отправить комментарий</Text> */}
                 </TouchableOpacity>
               </View>
             </View>

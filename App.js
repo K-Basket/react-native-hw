@@ -5,7 +5,6 @@ import { Keyboard, StyleSheet, TouchableWithoutFeedback } from 'react-native';
 import { Navigation } from './components/Navigation.js';
 import { Provider } from 'react-redux';
 import { store } from './redux/store.js';
-import { xxx } from './test.js'; // !!!!!!!!!!!!!!!!!!!!!!!!!!! temp
 
 export default function App() {
   const [fontsLoaded] = useFonts({
