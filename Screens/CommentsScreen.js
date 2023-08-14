@@ -29,6 +29,7 @@ import {
 } from 'firebase/firestore';
 import { db } from '../firebase/config';
 import { Feather } from '@expo/vector-icons';
+import { getDateFormat } from '../helpers/date';
 
 export function CommentsScreen() {
   const [comment, setComment] = useState('');
@@ -62,11 +63,13 @@ export function CommentsScreen() {
 
   const createCommentsPost = async () => {
     try {
+      const date = getDateFormat();
       const ref = doc(db, 'photoPosts', postId);
 
       const docRef = await addDoc(collection(ref, 'Comments'), {
         nickName,
         comment,
+        date,
       });
 
       setCommentId(docRef.id); // id коментария
@@ -87,13 +90,13 @@ export function CommentsScreen() {
 
       // получает данные с сервера
       const ref = doc(db, 'photoPosts', postId);
-      // const ref = doc(db, nickName, postId);
       const querySnapshot = await getDocs(collection(ref, 'Comments'));
+      // добавляет в DB количество коментариев
       await updateDoc(ref, { countComment: count });
 
       return setAllComments(() => {
         let data = [];
-        // записывает в переменную data данные с сервера
+        // записывает в переменную data данные из DB
         querySnapshot.forEach(doc => {
           data.push({ id: doc.id, ...doc.data() });
         });
@@ -142,6 +145,7 @@ export function CommentsScreen() {
 
                   <View style={styles.wrapTextComment}>
                     <Text style={styles.textComment}>{item.comment}</Text>
+                    <Text style={styles.textTime}>{item.date}</Text>
                   </View>
                 </View>
               )}
@@ -300,5 +304,11 @@ const styles = StyleSheet.create({
     fontSize: 13,
     color: '#212121',
     lineHeight: 18,
+  },
+  textTime: {
+    marginTop: 8,
+    fontFamily: 'Roboto-400',
+    fontSize: 12,
+    color: '#BDBDBD',
   },
 });
